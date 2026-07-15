@@ -100,8 +100,15 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
         <div className="sticker sticker-one"><span>BOOKS</span><b>brewed<br />for you</b></div>
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
-          <div className="hero-variant-copy" key={`copy-${heroIndex}`}><h1>Find a book<br />that feels like<br /><em>your cup of tea.</em></h1></div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>BREW YOURS</b><small>ชงแก้วที่เป็นคุณ</small><span>→</span></a></div>
+          <div className="hero-variant-copy">
+            <h1>
+              <span>Find a book</span>
+              <span>that feels like</span>
+              <em>your cup of</em>
+              <em className="tea-line">tea.</em>
+            </h1>
+          </div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>ชงแก้วที่เป็นคุณ</b><span>→</span></a></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>
@@ -117,7 +124,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
               </span>
             </div>;
           })}
-          <div className="carousel-caption" key={`caption-${heroIndex}`}><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p></div>
+          <div className="carousel-caption"><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p></div>
           <div className="carousel-pagination" aria-hidden="true">{heroCups.map((cup,index)=><i className={heroIndex===index?"active":""} key={cup.name}></i>)}</div>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>

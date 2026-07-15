@@ -33,3 +33,10 @@
 @media(min-width:1700px){.catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1640px}.catalog-card{grid-template-columns:135px minmax(0,1fr)}}
 @media(max-width:1050px){.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-card{grid-template-columns:125px minmax(0,1fr)}}
 @media(max-width:650px){.catalog-grid{grid-template-columns:1fr;padding-inline:15px}.catalog-card{grid-template-columns:105px minmax(0,1fr);min-height:400px}.generated-cover{min-height:220px}.catalog-copy>span{-webkit-line-clamp:2}}
+
+/* Real book proportions, playable media, and stable Thai typography. */
+.generated-cover{height:auto;min-height:0;max-height:none;aspect-ratio:2/3;align-self:center}
+.catalog-card{min-height:390px;align-items:center}
+.youtube-summary{margin:28px auto 22px;border:3px solid var(--ink);background:var(--cream);text-align:left;box-shadow:6px 6px 0 var(--ink);overflow:hidden}.youtube-summary iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:var(--ink)}.youtube-summary>div{padding:14px 16px}.youtube-summary span{display:block;font:700 8px/1.4 Arial;letter-spacing:1.5px;color:var(--red)}.youtube-summary b{display:block;font:600 17px/1.35 "IBM Plex Sans Thai",sans-serif;margin:5px 0}.youtube-summary small{font-size:11px;line-height:1.55}
+.cup-detail-hero h2,.catalog-copy h3,.experience h2,.coffee-menu-copy h2{font-family:"Itim","IBM Plex Sans Thai",sans-serif;line-height:1.25;letter-spacing:0}.cup-detail-copy>p,.experience p,.coffee-menu-copy p,.coffee-recipe-grid b{line-height:1.7}
+@media(max-width:650px){.catalog-card{min-height:330px;align-items:start}.generated-cover{min-height:0}.youtube-summary{margin-inline:-2px}}

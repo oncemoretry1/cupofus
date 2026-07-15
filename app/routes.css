@@ -67,3 +67,12 @@
 @media(max-width:1400px) and (min-width:1001px){.hero{grid-template-columns:minmax(600px,1.08fr) minmax(390px,.72fr);gap:28px;padding-inline:55px}.hero h1{font-size:68px;line-height:.88;letter-spacing:-4px;margin:20px 0}.hero-copy{width:600px}.hero-actions{margin-top:16px}.hero-cup-carousel{width:390px}}
 @media(max-width:650px){.hero-cup-carousel{margin-bottom:92px}.carousel-caption{bottom:-48px}.carousel-pagination{bottom:-70px}}
 .carousel-caption{animation:captionFade .55s ease both;transform:translateX(-50%)}@keyframes captionFade{from{opacity:0}to{opacity:1}}.hero-actions .main-cta small{align-self:center;line-height:1.05;padding-bottom:1px}
+
+/* Keep the promise readable in exactly four lines and keep carousel changes calm. */
+.hero-variant-copy,.carousel-caption{animation:none!important}
+.hero h1>span,.hero h1>em{display:block;width:max-content;white-space:nowrap}
+.hero h1 em:after{display:none}
+.hero h1 em.tea-line:after{display:block}
+@media(max-width:1400px) and (min-width:1001px){.hero h1{font-size:62px}}
+@media(max-width:650px){.hero h1{font-size:52px;line-height:.88;letter-spacing:-2.7px;margin-block:22px}.hero-copy{width:100%}}
+.hero-actions .main-cta{grid-template-rows:1fr}.hero-actions .main-cta b{font:600 16px/1.35 "IBM Plex Sans Thai",sans-serif;letter-spacing:0}.hero-actions .main-cta span{grid-row:1}

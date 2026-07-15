@@ -58,3 +58,14 @@ test("each detail page exposes read, listen, watch and book-specific buying", as
   assert.match(reader, /ค้นหา \{book\.title\} บน Google Books/);
   assert.match(externalBooks, /fallbackUrl/);
 });
+
+test("featured books embed playable YouTube summaries and Spotify tracks", async () => {
+  const detail = await read("app/cup/[slug]/page.tsx");
+  const youtubeIds = detail.match(/youtubeId:"[A-Za-z0-9_-]+"/g) ?? [];
+  const spotifyIds = detail.match(/spotifyId:"[A-Za-z0-9]+"/g) ?? [];
+
+  assert.equal(youtubeIds.length, 8);
+  assert.equal(spotifyIds.length, 8);
+  assert.match(detail, /youtube-nocookie\.com\/embed/);
+  assert.match(detail, /open\.spotify\.com\/embed\/track/);
+});
