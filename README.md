@@ -1,98 +1,70 @@
-# vinext-starter
+# Cup of Us
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Cup of Us is a full-stack book-discovery café: visitors answer seven questions, brew a personal cup, and receive book, coffee, podcast, music, and film pairings.
 
-## Prerequisites
+Production: https://between-the-lines-th.graphgent-sora.chatgpt.site
 
-- Node.js `>=22.13.0`
+## What is included
 
-## Quick Start
+- 50-book self-enrichment catalogue
+- Seven-question recommendation flow
+- 50 real café drink pairings
+- Thai reading summaries and infographics
+- Embedded YouTube summaries and Spotify tracks for featured books
+- Film, retailer, profile, saved-cup, community, and analytics surfaces
+- Cloudflare D1 schema and Drizzle migrations
+- Guest-first usage; no ChatGPT login is required
+
+## Local development
+
+Requirements: Node.js 22.13 or newer.
 
 ```bash
 npm install
+cp .env.example .env.local
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+Then open the local URL shown in the terminal.
 
-## Included Shape
+## Verification
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm test
+npm run lint
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+## Environment variables
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+Copy `.env.example` to `.env.local`. Never commit real credentials.
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+- `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`: resolve Spotify tracks dynamically
+- `TMDB_API_KEY`: retrieve film metadata
+- `GOOGLE_BOOKS_API_KEY`: enrich book metadata
+- `GOOGLE_MAPS_API_KEY`: future nearby-café integration
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+The featured eight books include direct Spotify and YouTube embed IDs and work without OAuth. API credentials expand dynamic coverage.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## Database
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+The D1 binding is named `DB`. Schema and seed migrations live in `drizzle/`.
 
-## Useful Commands
+Important tables:
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+- `books`
+- `coffee_pairings`
+- `media_pairings`
+- `saved_cups`
+- `profiles`
+- `creator_posts`
+- `analytics_events`
 
-## Learn More
+## Continue from another ChatGPT/Codex account
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+Read [ACCOUNT_TRANSFER.md](./ACCOUNT_TRANSFER.md). The new account must create its own Sites project and environment variables. The current `.openai/hosting.json` contains the existing Sites project ID and is not portable between owners.
+
+## Security
+
+- Keep the repository private while credentials and commercial plans are being prepared.
+- Never commit `.env`, `.env.local`, API keys, OAuth secrets, tokens, or database exports.
+- Rotate any credential previously pasted into a chat before production use.
