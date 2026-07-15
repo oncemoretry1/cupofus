@@ -1,0 +1,1 @@
+UPDATE `media_pairings` SET `movie_title`='(500) Days of Summer',`movie_year`=2009,`movie_url`='https://www.google.com/search?q=500+Days+of+Summer+movie',`reason`='สำรวจรูปแบบความผูกพัน ความคาดหวัง และเรื่องเล่าที่เราสร้างขึ้นในความสัมพันธ์' WHERE `book_slug`='attached';

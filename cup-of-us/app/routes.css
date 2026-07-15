@@ -1,0 +1,78 @@
+/* Each destination is a focused page, while sharing one visual system. */
+.view-landing>section:not(.hero):not(.ticker),
+.view-landing>footer{display:none}
+.view-brew>section:not(.journey-section),
+.view-discover>section:not(.mood-bar):not(.menu-section):not(.recipe-section):not(.market-section),
+.view-club>section:not(.community-discovery):not(.club-section):not(.stories):not(.join-section),
+.view-partners>section:not(.partner-cafes):not(.market-section){display:none}
+
+.view-brew .journey-section{display:block;padding:64px 24px 90px;background:var(--paper)}
+.view-brew .brew-intro.compact{position:static;text-align:center;max-width:720px;margin:0 auto 32px}
+.view-brew .brew-intro.compact .section-no{margin-inline:auto}
+.view-brew .journey-lab{width:min(100%,1040px);margin-inline:auto;min-height:0;box-shadow:7px 7px 0 var(--blue)}
+.view-brew .brew-result{width:min(100%,860px);margin:auto;padding:34px;min-height:0}
+.view-brew .brewing-scene{max-width:760px;margin:auto}
+.view-brew .cup-layers .layer{height:14.285%!important;flex-basis:14.285%}
+
+.coffee-crowd{display:none}
+.coffee-mini{position:absolute;width:62px;height:65px;border:2px solid var(--ink);border-radius:5px 5px 22px 22px;background:var(--yellow);box-shadow:4px 4px 0 var(--red);transform:rotate(-9deg);animation:miniFloat 3.8s ease-in-out infinite alternate}
+.coffee-mini:before{content:"";position:absolute;width:23px;height:31px;border:8px solid var(--ink);border-left:0;right:-25px;top:14px;border-radius:0 22px 22px 0}
+.coffee-mini:after{content:"☕";position:absolute;inset:0;display:grid;place-items:center;font-size:18px}
+.coffee-mini-a{right:7%;top:23%;background:var(--pink);transform:rotate(12deg)}
+.coffee-mini-b{right:38%;top:12%;background:var(--blue);animation-delay:.5s}
+.coffee-mini-c{right:4%;bottom:17%;background:var(--yellow);transform:rotate(-14deg);animation-delay:1s}
+.coffee-mini-d{right:37%;bottom:10%;background:var(--red);transform:rotate(8deg);animation-delay:1.5s}
+.coffee-mini-e{right:25%;top:8%;width:44px;height:47px;background:var(--cream);animation-delay:2s}
+@keyframes miniFloat{to{translate:0 -12px;rotate:4deg}}
+.floating-bean{position:absolute;width:16px;height:27px;background:#6c3825;border:2px solid var(--ink);border-radius:50%;animation:beanDrift 6s ease-in-out infinite alternate}.floating-bean:after{content:"";position:absolute;width:2px;height:19px;left:6px;top:2px;background:var(--cream);transform:rotate(18deg)}.bean-one{right:18%;top:17%;rotate:25deg}.bean-two{right:44%;bottom:22%;rotate:-30deg;animation-delay:1.8s}.bean-three{right:7%;top:52%;rotate:65deg;animation-delay:3.2s}@keyframes beanDrift{to{translate:18px -22px;rotate:120deg}}
+
+.hero-actions .main-cta{min-width:230px;min-height:62px;padding:10px 18px 10px 24px;display:grid;grid-template-columns:1fr auto;column-gap:18px;align-items:center;border-width:3px;box-shadow:7px 7px 0 var(--ink);font-size:14px;transition:.18s;position:relative;z-index:4}
+.hero-actions .main-cta b{letter-spacing:.8px}
+.hero-actions .main-cta small{grid-column:1;font:400 11px/1.2 "Itim","IBM Plex Sans Thai",sans-serif}
+.hero-actions .main-cta span{grid-column:2;grid-row:1/3;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--red);color:#fff;font-size:20px}
+.hero-actions .main-cta:hover{transform:translateY(-4px);box-shadow:10px 11px 0 var(--ink)}
+
+.hero-cup-carousel{height:500px;width:min(46vw,650px);position:relative;justify-self:start;z-index:3;perspective:1000px;touch-action:pan-y}.carousel-cup{position:absolute;inset:40px auto auto 50%;width:340px;height:420px;border:0;background:transparent;padding:0;transition:transform .72s cubic-bezier(.2,.85,.2,1),opacity .55s ease,filter .55s ease;transform-origin:center bottom}.carousel-cup .hero-cup{display:block}.carousel-cup.is-active{z-index:3;opacity:1;filter:none;transform:translateX(-50%) scale(1)}.carousel-cup.is-left{z-index:1;opacity:.23;filter:blur(1.2px) saturate(.65);transform:translateX(-105%) translateY(42px) rotate(-8deg) scale(.68)}.carousel-cup.is-right{z-index:1;opacity:.23;filter:blur(1.2px) saturate(.65);transform:translateX(7%) translateY(42px) rotate(8deg) scale(.68)}.carousel-cup.is-left:hover,.carousel-cup.is-right:hover{opacity:.48;filter:blur(.3px) saturate(.85)}.carousel-cup:not(.is-active) .falling-mix,.carousel-cup:not(.is-active) .steam,.carousel-cup:not(.is-active) .cup-recipe{opacity:0}.carousel-cup.is-active .hero-cup{animation:cupBreathe 3.6s ease-in-out infinite alternate}.carousel-cup .cup-recipe{position:absolute;right:-50px;bottom:55px;background:var(--cream);border:2px solid var(--ink);padding:10px;min-width:135px;font:800 9px/1.3 Arial,sans-serif;transform:rotate(-8deg);transition:opacity .35s}.carousel-cup .cup-recipe>span{display:block;font:800 8px/1.5 Arial}.carousel-arrow{position:absolute;top:48%;z-index:6;width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;background:var(--cream);box-shadow:3px 3px 0 var(--ink);font-size:18px;transition:.18s}.carousel-arrow:hover{background:var(--yellow);transform:translateY(-3px)}.carousel-prev{left:2px}.carousel-next{right:2px}@keyframes cupBreathe{to{transform:translateY(-8px) rotate(1deg)}}
+
+@media(pointer:fine){html,body,a,button,input{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath d='M4 7h18v12a7 7 0 0 1-7 7H11a7 7 0 0 1-7-7V7Z' fill='%23f5e545' stroke='%23172f2b' stroke-width='2'/%3E%3Cpath d='M22 10h2a4 4 0 0 1 0 8h-2' fill='none' stroke='%23172f2b' stroke-width='2'/%3E%3Cpath d='M9 5c-2-2 2-2 0-4M15 5c-2-2 2-2 0-4' fill='none' stroke='%23e94d3f' stroke-width='2'/%3E%3C/svg%3E") 5 5,auto}}
+
+@media(max-width:1000px){.hero-cup-carousel{justify-self:center;width:min(100%,680px)}}
+@media(max-width:900px){.coffee-crowd{opacity:.28}.view-brew .journey-section{padding-inline:20px}}
+@media(max-width:650px){.coffee-crowd{display:none}.view-brew .brew-result{padding:24px 15px}.hero-actions .main-cta{min-width:250px}.hero-cup-carousel{height:390px;width:calc(100vw - 24px);transform:scale(.82);transform-origin:top center}.carousel-cup.is-left{transform:translateX(-92%) translateY(48px) scale(.62)}.carousel-cup.is-right{transform:translateX(-8%) translateY(48px) scale(.62)}.carousel-arrow{top:60%}}
+@media(prefers-reduced-motion:reduce){.coffee-crowd,.coffee-mini,.floating-bean,.carousel-cup,.carousel-cup.is-active .hero-cup{animation:none!important;transition:none!important;translate:none!important}}
+
+/* Calm carousel proportions: one hero, two quiet previews. */
+.view-landing{min-height:100vh}.view-landing>.hero{min-height:calc(100vh - 123px)}
+.hero-cup-carousel{height:450px;width:min(43vw,590px);overflow:hidden}
+.carousel-cup{top:22px}
+.carousel-cup.is-active{transform:translateX(-50%) scale(.88)}
+.carousel-cup.is-left{opacity:.16;filter:blur(1.6px) saturate(.5);transform:translateX(-102%) translateY(56px) rotate(-5deg) scale(.57)}
+.carousel-cup.is-right{opacity:.16;filter:blur(1.6px) saturate(.5);transform:translateX(2%) translateY(56px) rotate(5deg) scale(.57)}
+.carousel-arrow{width:38px;height:38px}
+@media(max-width:1000px){.hero{padding-top:105px;gap:20px}.hero-copy{max-width:620px}.hero h1{font-size:clamp(60px,10vw,78px);line-height:.88;letter-spacing:-4px}.hero-cup-carousel{width:min(100%,600px);height:420px}.sticker-one{display:none}}
+@media(max-width:650px){.hero{padding-top:88px}.hero h1{font-size:56px;line-height:.9;letter-spacing:-3px}.hero-actions .main-cta{min-width:220px}.hero-cup-carousel{height:340px;width:calc(100vw - 24px);transform:scale(.72);transform-origin:top center}.carousel-cup.is-left{transform:translateX(-95%) translateY(58px) scale(.55)}.carousel-cup.is-right{transform:translateX(-5%) translateY(58px) scale(.55)}.carousel-arrow{top:55%}}
+.carousel-cup .cup-recipe{right:-58px;bottom:42px;min-width:178px;padding:14px 16px;border-width:2.5px;transform:rotate(-6deg);box-shadow:4px 4px 0 rgba(23,47,43,.16)}.carousel-cup .cup-recipe>span{font-size:11px;line-height:1.55}
+.hero-cup-carousel{overflow:visible}
+.hero-cup-carousel{cursor:grab;user-select:none}.hero-cup-carousel:active{cursor:grabbing}.carousel-arrow{display:none!important}.carousel-pagination{position:absolute;left:50%;bottom:-151px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:8px;z-index:9;pointer-events:none}.carousel-pagination i{display:block;width:7px;height:7px;border:1.5px solid var(--ink);border-radius:99px;background:var(--cream);transition:width .35s ease,background .35s ease}.carousel-pagination i.active{width:26px;background:var(--red)}
+.carousel-caption{position:absolute;left:50%;bottom:-111px;transform:translateX(-50%);width:min(100%,430px);text-align:center;z-index:8;pointer-events:none;animation:variantIn .55s ease both}.carousel-caption h3{font:400 30px/1 "Itim","IBM Plex Sans Thai",sans-serif;margin:0 0 9px}.carousel-caption p{font:15px/1.5 "Itim","IBM Plex Sans Thai",sans-serif;margin:0;color:var(--ink)}.hero-cup-carousel{margin-bottom:174px}
+.hero-actions .main-cta{width:210px;min-width:210px;height:64px;min-height:0;padding:9px 11px 9px 18px;grid-template-columns:1fr 36px;grid-template-rows:auto auto;column-gap:12px;align-content:center;border-width:2px;border-radius:34px;box-shadow:4px 4px 0 var(--ink);font-size:13px}.hero-actions .main-cta small{font-size:11px;align-self:start}.hero-actions .main-cta span{width:36px;height:36px;font-size:18px}.hero-actions .main-cta:hover{box-shadow:6px 6px 0 var(--ink)}
+@media(max-width:650px){.hero-actions .main-cta{width:210px;min-width:210px}.hero-cup-carousel .hero-cup{position:relative;right:auto;opacity:1;transform:rotate(4deg)}.hero-cup-carousel{height:340px;margin-top:-18px;margin-bottom:158px;transform:none}.carousel-cup{transform-origin:center top}.carousel-cup.is-active{transform:translateX(-50%) scale(.68)}.carousel-cup.is-left{transform:translateX(-100%) translateY(58px) scale(.42)}.carousel-cup.is-right{transform:translateX(0) translateY(58px) scale(.42)}.carousel-caption{bottom:-93px;width:320px}.carousel-caption h3{font-size:27px}.carousel-pagination{bottom:-132px}}
+
+.landing-brew-intro{position:fixed;inset:0;z-index:2000;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;animation:landingReveal 2.55s cubic-bezier(.65,0,.2,1) both}.landing-brew-intro>p{position:absolute;top:9vh;font:800 9px Arial;letter-spacing:3px}.landing-brew-intro>span{margin-top:30px;font:italic 16px Georgia;color:var(--red);animation:introLabel 2.1s ease both}.intro-empty-cup{width:205px;height:235px;border:4px solid var(--ink);border-radius:10px 10px 68px 68px;background:rgba(255,255,255,.65);position:relative;overflow:hidden;display:grid;place-items:center;box-shadow:10px 10px 0 var(--red);animation:introCupRise 2.35s cubic-bezier(.2,.85,.2,1) both}.intro-empty-cup:after{content:"";position:absolute;width:75px;height:112px;border:22px solid var(--ink);border-left:0;border-radius:0 65px 65px 0;right:-77px;top:58px}.intro-empty-cup>div{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to bottom,var(--yellow) 0 28%,var(--pink) 28% 54%,var(--blue) 54% 76%,#a96c47 76%);animation:introFill 1.35s .45s cubic-bezier(.2,.8,.3,1) forwards}.intro-empty-cup>div:before{content:"";position:absolute;left:-8%;top:-8px;width:116%;height:18px;background:var(--yellow);border-radius:50%;animation:introWave .55s ease-in-out infinite alternate}.intro-empty-cup b{z-index:2;font:900 48px/.56 Arial;text-align:center;letter-spacing:-4px;opacity:0;animation:introLogo .6s 1.15s ease forwards}.intro-empty-cup b em{font:italic 16px Georgia;letter-spacing:0}.intro-ingredients{position:absolute;top:calc(50% - 185px);width:150px;height:90px;z-index:2}.intro-ingredients i{position:absolute;top:0;left:15px;width:18px;height:18px;border:2px solid var(--ink);border-radius:50%;background:var(--yellow);animation:introDrop .75s .25s ease-in both}.intro-ingredients i:nth-child(2){left:65px;background:var(--pink);animation-delay:.48s}.intro-ingredients i:nth-child(3){left:115px;background:var(--blue);animation-delay:.72s}@keyframes introDrop{0%{opacity:0;transform:translateY(-25px) rotate(0)}30%{opacity:1}100%{opacity:0;transform:translateY(155px) rotate(160deg) scale(.45)}}@keyframes introFill{to{height:80%}}@keyframes introWave{to{transform:translateY(5px) rotate(1deg)}}@keyframes introLogo{to{opacity:1}}@keyframes introCupRise{0%{opacity:0;transform:translateY(70px) scale(.82)}22%,72%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-35px) scale(.68)}}@keyframes introLabel{0%,45%{opacity:0;transform:translateY(8px)}65%,100%{opacity:1;transform:none}}@keyframes landingReveal{0%,78%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@media(max-width:650px){.landing-brew-intro{animation-duration:2.3s}.intro-empty-cup{transform:scale(.88)}}
+@media(prefers-reduced-motion:reduce){.landing-brew-intro{display:none}}
+
+/* Keep the full landing composition inside common laptop heights. */
+.carousel-caption{bottom:-58px}.carousel-pagination{bottom:-95px}.hero-cup-carousel{margin-bottom:116px}
+@media(max-width:1400px) and (min-width:1001px){.hero{grid-template-columns:minmax(600px,1.08fr) minmax(390px,.72fr);gap:28px;padding-inline:55px}.hero h1{font-size:68px;line-height:.88;letter-spacing:-4px;margin:20px 0}.hero-copy{width:600px}.hero-actions{margin-top:16px}.hero-cup-carousel{width:390px}}
+@media(max-width:650px){.hero-cup-carousel{margin-bottom:92px}.carousel-caption{bottom:-48px}.carousel-pagination{bottom:-70px}}
+.carousel-caption{animation:captionFade .55s ease both;transform:translateX(-50%)}@keyframes captionFade{from{opacity:0}to{opacity:1}}.hero-actions .main-cta small{align-self:center;line-height:1.05;padding-bottom:1px}
+
+/* Keep the promise readable in exactly four lines and keep carousel changes calm. */
+.hero-variant-copy,.carousel-caption{animation:none!important}
+.hero h1>span,.hero h1>em{display:block;width:max-content;white-space:nowrap}
+.hero h1 em:after{display:none}
+.hero h1 em.tea-line:after{display:block}
+@media(max-width:1400px) and (min-width:1001px){.hero h1{font-size:62px}}
+@media(max-width:650px){.hero h1{font-size:52px;line-height:.88;letter-spacing:-2.7px;margin-block:22px}.hero-copy{width:100%}}
+.hero-actions .main-cta{grid-template-rows:1fr}.hero-actions .main-cta b{font:600 16px/1.35 "IBM Plex Sans Thai",sans-serif;letter-spacing:0}.hero-actions .main-cta span{grid-row:1}

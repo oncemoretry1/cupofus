@@ -1,0 +1,4 @@
+import { sql } from "drizzle-orm";
+import { getDb } from "../../../db";
+import { analyticsEvents, books, creatorPosts, profiles, savedCups } from "../../../db/schema";
+export async function GET(){const db=getDb();const [bookCount,profileCount,cupCount,postCount,eventCount]=await Promise.all([db.select({value:sql<number>`count(*)`}).from(books),db.select({value:sql<number>`count(*)`}).from(profiles),db.select({value:sql<number>`count(*)`}).from(savedCups),db.select({value:sql<number>`count(*)`}).from(creatorPosts),db.select({value:sql<number>`count(*)`}).from(analyticsEvents)]);const events=await db.select({eventName:analyticsEvents.eventName,value:sql<number>`count(*)`}).from(analyticsEvents).groupBy(analyticsEvents.eventName);return Response.json({totals:{books:bookCount[0].value,profiles:profileCount[0].value,savedCups:cupCount[0].value,posts:postCount[0].value,events:eventCount[0].value},events})}
