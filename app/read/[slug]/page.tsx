@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { BookEntrance } from "../../components/BookEntrance";
 
 type Book = {
   slug: string;
@@ -75,6 +76,7 @@ export default function DynamicReadPage() {
 
   return (
     <main className="reader-page">
+      <BookEntrance title={book.title} author={book.author} color={book.coverColor}/>
       <nav className="reader-top">
         <a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a>
         <a href={`/cup/${slug}`}>← กลับไปที่แก้ว</a>

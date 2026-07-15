@@ -89,6 +89,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
 
   return (
     <main id="top" className={`cup-view view-${view}`}>
+      {view==="landing"&&<div className="landing-brew-intro" aria-hidden="true"><p>BREWING CUP OF US</p><div className="intro-ingredients"><i></i><i></i><i></i></div><div className="intro-empty-cup"><div></div><b>cup<br/><em>of</em><br/>us</b></div><span>different books for different us</span></div>}
       <nav className="nav">
         <a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a>
         <div className="nav-links useful-nav"><a className="nav-search" href="/discover">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="/brew">ชงแก้วของฉัน</a><a href="/club">Cup (Club)</a><a href="/partners">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>
@@ -100,7 +101,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
           <div className="hero-variant-copy" key={`copy-${heroIndex}`}><h1>Find a book<br />that feels like<br /><em>your cup of tea.</em></h1></div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>BREW YOURS</b><small>ชงแก้วที่เป็นคุณ</small><span>→</span></a><div className="variant-controls"><button onClick={()=>setHeroIndex((heroIndex+heroCups.length-1)%heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>{heroCups.map((cup,index)=><button className={heroIndex===index?"active":""} onClick={()=>setHeroIndex(index)} type="button" aria-label={cup.name} key={cup.name}></button>)}<button onClick={()=>setHeroIndex((heroIndex+1)%heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button></div></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>BREW YOURS</b><small>ชงแก้วที่เป็นคุณ</small><span>→</span></a></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>
@@ -116,7 +117,8 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
               </span>
             </div>;
           })}
-          <div className="carousel-caption"><p className="eyebrow">A LITTLE BOOK CAFÉ FOR EVERY KIND OF US</p><span className="variant-count">{String(heroIndex + 1).padStart(2,"0")} / 07 · {heroCups[heroIndex].name}</span><p className="variant-book">NOW SERVING · {heroCups[heroIndex].book}</p><p className="carousel-thai">{heroCups[heroIndex].label}<br/>หนังสือและส่วนผสมที่เหมาะกับคุณในช่วงเวลานี้</p></div>
+          <div className="carousel-caption" key={`caption-${heroIndex}`}><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p></div>
+          <div className="carousel-pagination" aria-hidden="true">{heroCups.map((cup,index)=><i className={heroIndex===index?"active":""} key={cup.name}></i>)}</div>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>

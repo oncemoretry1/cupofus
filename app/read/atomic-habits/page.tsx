@@ -1,3 +1,5 @@
+import { BookEntrance } from "../../components/BookEntrance";
+
 const chapters = [
   ["opening", "ก่อนเริ่มจิบ"],
   ["idea", "ไอเดียหลัก"],
@@ -7,7 +9,7 @@ const chapters = [
 ];
 
 export default function ReadAtomicHabits() {
-  return <main className="reader-page">
+  return <main className="reader-page"><BookEntrance title="Atomic Habits" author="James Clear" color="#f5e545"/>
     <nav className="reader-top"><a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a><a href="/discover">← กลับไปหน้า Discover</a></nav>
     <aside className="reader-directory"><p>บทสรุป 5 นาที</p><h2>Atomic<br/>Habits</h2><div className="read-progress"><i></i></div><nav>{chapters.map(([id,label],index)=><a href={`#${id}`} key={id}><span>0{index+1}</span>{label}</a>)}</nav><div className="directory-actions"><a href="/cup/atomic-habits#listen">▶ ฟังบทสรุป</a><a href="https://www.naiin.com/product/detail/508699" target="_blank" rel="noreferrer sponsored">ซื้อ Atomic Habits ↗</a></div></aside>
     <article className="reader-content">

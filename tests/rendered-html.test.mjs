@@ -33,6 +33,15 @@ test("database ships fifty books and fifty media pairings", async () => {
   assert.equal(mediaRows.length, 50);
 });
 
+test("every book has a real café drink pairing", async () => {
+  const coffeeSql = await read("drizzle/0003_coffee_pairings.sql");
+  const pairings = coffeeSql.match(/^\('[^']+'/gm) ?? [];
+  assert.equal(pairings.length, 50);
+  assert.match(coffeeSql, /order_tip/);
+  assert.match(coffeeSql, /Honey Americano/);
+  assert.match(coffeeSql, /Hot Americano/);
+});
+
 test("each detail page exposes read, listen, watch and book-specific buying", async () => {
   const [detail, reader, externalBooks] = await Promise.all([
     read("app/cup/[slug]/page.tsx"),
