@@ -110,6 +110,25 @@ export default function Home() {
         <div className="creator-strip"><div><p className="eyebrow">UGC CREATOR PROGRAM</p><h3>มีหนังสือที่อยากป้ายยา? ชง Cup Review ของคุณเอง</h3><p>ทำคลิป พอดแคสต์ หรือสรุปสั้น ๆ สร้างลิงก์ร้านค้า และรับส่วนแบ่งเมื่อมีคนพบหนังสือที่ใช่ผ่านคอนเทนต์ของคุณ</p></div><a href="#club">BECOME A CUP CURATOR →</a></div>
       </section>
 
+      <section className="community-discovery">
+        <div className="community-heading"><p className="eyebrow">DISCOVERED & SHARED BY US</p><h2>ไม่ได้ป้ายยาแค่หนังสือ<br /><em>แต่ป้ายยาชีวิตที่อยากลอง</em></h2><p>ทุกโพสต์เชื่อมสิ่งที่สมาชิกกำลังสนใจเข้ากับหนังสือ พอดแคสต์ คาเฟ่ และเมนูจากร้านที่เข้าร่วมกับเรา</p></div>
+        <div className="ugc-grid">
+          <article className="ugc-card ugc-book"><div className="ugc-label">BOOK CUP</div><div className="ugc-visual">DEEP<br/>WORK</div><p>“เล่มนี้เหมาะกับวันที่แจ้งเตือนดังจนไม่ได้ยินความคิดตัวเอง”</p><footer><span>by @mildreads</span><b>♡ 128</b></footer></article>
+          <article className="ugc-card ugc-cafe"><div className="ugc-label">CAFÉ CUP</div><div className="ugc-visual">☕<small>QUIET<br/>CORNER</small></div><p>“โต๊ะริมหน้าต่าง แสงบ่าย และเมนูไม่หวาน เหมาะกับอ่านบทที่ค้างไว้”</p><footer><span>by @sundaypages</span><b>♡ 94</b></footer></article>
+          <article className="ugc-card ugc-podcast"><div className="ugc-label">PODCAST CUP</div><div className="ugc-visual">▶<small>18:42</small></div><p>“เอพิโสดที่ชวนคิดว่า การพักไม่ใช่รางวัล แต่เป็นส่วนหนึ่งของงาน”</p><footer><span>by @slowbetter</span><b>♡ 203</b></footer></article>
+        </div>
+        <a className="create-post" href="#club">＋ ชงโพสต์ป้ายยาของคุณ</a>
+      </section>
+
+      <section className="partner-cafes">
+        <div className="partner-head"><div><p className="eyebrow">CUP OF US PARTNER CAFÉS</p><h2>หาร้านและเมนู<br /><em>ที่เข้ากับแก้วของคุณ</em></h2></div><p>ร้านพาร์ตเนอร์สามารถแชร์เมนู กิจกรรมอ่านหนังสือ และสิทธิพิเศษให้สมาชิก พร้อมลิงก์ออกไปดูรีวิว เส้นทาง และ Social ของร้านโดยตรง</p></div>
+        <div className="cafe-list">
+          <article><div className="cafe-badge blue-cafe">C</div><div><span>ARI · PARTNER SAMPLE</span><h3>Chapter & Cup</h3><p>เหมาะกับ: อ่านเงียบ ๆ · เขียนบันทึก · Deep work</p><div className="menu-pills"><b>Calm Oat Latte</b><b>1% Better Cold Brew</b></div></div><div className="cafe-links"><a href="https://www.google.com/maps/search/cafe+ari+bangkok" target="_blank" rel="noreferrer">Google Maps ↗</a><a href="https://www.google.com/search?q=cafe+ari+bangkok+reviews" target="_blank" rel="noreferrer">Google Reviews ↗</a><a href="#club">Social ↗</a></div></article>
+          <article><div className="cafe-badge orange-cafe">U</div><div><span>CHAROEN KRUNG · PARTNER SAMPLE</span><h3>Unfinished Stories</h3><p>เหมาะกับ: Book date · Podcast club · คุยกับคนแปลกหน้า</p><div className="menu-pills"><b>Courage Espresso</b><b>Curious Cocoa</b></div></div><div className="cafe-links"><a href="https://www.google.com/maps/search/cafe+charoen+krung+bangkok" target="_blank" rel="noreferrer">Google Maps ↗</a><a href="https://www.google.com/search?q=cafe+charoen+krung+bangkok+reviews" target="_blank" rel="noreferrer">Google Reviews ↗</a><a href="#club">Social ↗</a></div></article>
+        </div>
+        <p className="sample-note">* รายชื่อร้านและเมนูในต้นแบบนี้เป็นข้อมูลตัวอย่างสำหรับแสดงรูปแบบแพลตฟอร์ม</p>
+      </section>
+
       <section className="club-section" id="club">
         <div className="club-title"><p className="eyebrow">MORE THAN A BOOK CLUB</p><h2>Cup <i>(Club)</i><br />of Us</h2><p>ร้านกาแฟสมมติ ที่เราเอาหนังสือ ความคิด และตัวเองเวอร์ชันที่อยากเป็น มานั่งคุยโต๊ะเดียวกัน</p></div>
         <div className="events">
