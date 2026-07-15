@@ -1,87 +1,51 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+test("landing and brew experience keep the seven-cup contract", async () => {
+  const page = await read("app/page.tsx");
+  const cups = page.match(/name:\s*"Cup of /g) ?? [];
+  const questionBlock = page.slice(page.indexOf("const brewQuestions"), page.indexOf("export default"));
+  const questions = questionBlock.match(/label:\s*"/g) ?? [];
+  const options = questionBlock.match(/options:\s*\[/g) ?? [];
 
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
-}
-
-test("server-renders the starter loading skeleton", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Codex is working/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(html, /Codex is building the first version/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+  assert.equal(cups.length, 7);
+  assert.equal(questions.length, 7);
+  assert.equal(options.length, 7);
+  assert.match(page, /\/ 07/);
+  assert.match(page, /\/7 INGREDIENTS/);
+  assert.match(page, /\/api\/recommend/);
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
+test("database ships fifty books and fifty media pairings", async () => {
+  const [initial, collection, pairings] = await Promise.all([
+    read("drizzle/0000_slow_gauntlet.sql"),
+    read("drizzle/0001_fifty_book_collection.sql"),
+    read("drizzle/0002_media_pairings.sql"),
+  ]);
+  const initialBooks = initial.split("INSERT INTO `books`")[1].match(/\('[a-z0-9-]+'/g) ?? [];
+  const addedBooks = collection.match(/\('[a-z0-9-]+'/g) ?? [];
+  const mediaRows = pairings.match(/\('[a-z0-9-]+'/g) ?? [];
+
+  assert.equal(initialBooks.length + addedBooks.length, 50);
+  assert.equal(mediaRows.length, 50);
+});
+
+test("each detail page exposes read, listen, watch and book-specific buying", async () => {
+  const [detail, reader, externalBooks] = await Promise.all([
+    read("app/cup/[slug]/page.tsx"),
+    read("app/read/[slug]/page.tsx"),
+    read("app/api/external/books/route.ts"),
   ]);
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
-
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
-
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
-
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+  assert.match(detail, /id="read"/);
+  assert.match(detail, /id="listen"/);
+  assert.match(detail, /id="watch"/);
+  assert.match(detail, /id="buy"/);
+  assert.match(detail, /encodeURIComponent\(`\$\{book\.title\} \$\{book\.author\}`\)/);
+  assert.match(reader, /reader-directory/);
+  assert.match(reader, /ค้นหา \{book\.title\} บน Google Books/);
+  assert.match(externalBooks, /fallbackUrl/);
 });

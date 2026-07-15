@@ -12,7 +12,7 @@
 .view-brew .journey-lab{width:min(100%,1040px);margin-inline:auto;min-height:0;box-shadow:7px 7px 0 var(--blue)}
 .view-brew .brew-result{width:min(100%,860px);margin:auto;padding:34px;min-height:0}
 .view-brew .brewing-scene{max-width:760px;margin:auto}
-.view-brew .cup-layers .layer{height:20%!important;flex-basis:20%}
+.view-brew .cup-layers .layer{height:14.285%!important;flex-basis:14.285%}
 
 .coffee-crowd{display:none}
 .coffee-mini{position:absolute;width:62px;height:65px;border:2px solid var(--ink);border-radius:5px 5px 22px 22px;background:var(--yellow);box-shadow:4px 4px 0 var(--red);transform:rotate(-9deg);animation:miniFloat 3.8s ease-in-out infinite alternate}
@@ -51,4 +51,9 @@
 .carousel-arrow{width:38px;height:38px}
 @media(max-width:1000px){.hero{padding-top:105px;gap:20px}.hero-copy{max-width:620px}.hero h1{font-size:clamp(60px,10vw,78px);line-height:.88;letter-spacing:-4px}.hero-cup-carousel{width:min(100%,600px);height:420px}.sticker-one{display:none}}
 @media(max-width:650px){.hero{padding-top:88px}.hero h1{font-size:56px;line-height:.9;letter-spacing:-3px}.hero-actions .main-cta{min-width:220px}.hero-cup-carousel{height:340px;width:calc(100vw - 24px);transform:scale(.72);transform-origin:top center}.carousel-cup.is-left{transform:translateX(-95%) translateY(58px) scale(.55)}.carousel-cup.is-right{transform:translateX(-5%) translateY(58px) scale(.55)}.carousel-arrow{top:55%}}
-.carousel-cup .cup-recipe{right:-76px;bottom:42px;min-width:178px;padding:14px 16px;border-width:2.5px;transform:rotate(-6deg);box-shadow:4px 4px 0 rgba(23,47,43,.16)}.carousel-cup .cup-recipe>span{font-size:11px;line-height:1.55}
+.carousel-cup .cup-recipe{right:-58px;bottom:42px;min-width:178px;padding:14px 16px;border-width:2.5px;transform:rotate(-6deg);box-shadow:4px 4px 0 rgba(23,47,43,.16)}.carousel-cup .cup-recipe>span{font-size:11px;line-height:1.55}
+.hero-cup-carousel{overflow:visible}
+.hero-cup-carousel{cursor:grab;user-select:none}.hero-cup-carousel:active{cursor:grabbing}.carousel-arrow{display:none!important}.variant-controls button:first-child,.variant-controls button:last-child{display:none}.variant-controls{pointer-events:none}
+.carousel-caption{position:absolute;left:50%;bottom:-118px;transform:translateX(-50%);width:100%;text-align:center;z-index:8;pointer-events:none}.carousel-caption .eyebrow{margin:0 0 4px}.carousel-caption .variant-count{margin:0}.carousel-caption .variant-book{margin:9px 0 5px}.carousel-thai{font:14px/1.45 "Itim","IBM Plex Sans Thai",sans-serif;margin:0}.hero-cup-carousel{margin-bottom:128px}
+.hero-actions .main-cta{min-width:190px;min-height:54px;padding:8px 10px 8px 18px;column-gap:12px;border-width:2px;box-shadow:5px 5px 0 var(--ink);font-size:12px}.hero-actions .main-cta small{font-size:10px;align-self:start}.hero-actions .main-cta span{width:34px;height:34px;font-size:18px}.hero-actions .main-cta:hover{box-shadow:7px 8px 0 var(--ink)}
+@media(max-width:650px){.hero-actions .main-cta{min-width:190px}.hero-cup-carousel .hero-cup{position:relative;right:auto;opacity:1;transform:rotate(4deg)}.hero-cup-carousel{height:340px;margin-top:-18px;margin-bottom:110px;transform:none}.carousel-cup{transform-origin:center top}.carousel-cup.is-active{transform:translateX(-50%) scale(.68)}.carousel-cup.is-left{transform:translateX(-100%) translateY(58px) scale(.42)}.carousel-cup.is-right{transform:translateX(0) translateY(58px) scale(.42)}.carousel-caption{bottom:-90px}}

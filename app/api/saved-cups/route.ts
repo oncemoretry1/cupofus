@@ -1,0 +1,5 @@
+import { desc, eq } from "drizzle-orm";
+import { getDb } from "../../../db";
+import { books, savedCups } from "../../../db/schema";
+export async function GET(request:Request){const guestId=new URL(request.url).searchParams.get("guestId");if(!guestId)return Response.json({cups:[]});const cups=await getDb().select({id:savedCups.id,cupName:savedCups.cupName,answers:savedCups.answers,createdAt:savedCups.createdAt,bookId:savedCups.bookId,bookSlug:books.slug,bookTitle:books.title,coverColor:books.coverColor}).from(savedCups).leftJoin(books,eq(savedCups.bookId,books.id)).where(eq(savedCups.userEmail,guestId)).orderBy(desc(savedCups.createdAt));return Response.json({cups})}
+export async function POST(request:Request){const {guestId,bookId,cupName,answers=[]}=await request.json();if(!guestId||!bookId||!cupName)return Response.json({error:"missing fields"},{status:400});const row=await getDb().insert(savedCups).values({userEmail:String(guestId),bookId:Number(bookId),cupName:String(cupName).slice(0,100),answers:JSON.stringify(answers)}).returning();return Response.json({cup:row[0]})}
