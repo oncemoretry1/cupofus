@@ -24,9 +24,11 @@ const brewQuestions = [
   { label:"SWEETNESS", question:"วันนี้อยากได้รับกำลังใจแค่ไหน?", options:["หวานน้อย เน้นความจริง","พอดี ๆ มีทั้งปลอบและผลัก","เติมเต็ม ขอความอ่อนโยน"] },
   { label:"SIZE", question:"ตอนนี้มีพื้นที่ให้การอ่านแค่ไหน?", options:["วันละ 10 นาที","หนึ่งบทก่อนนอน","พร้อมอ่านยาว ๆ"] },
   { label:"AFTERTASTE", question:"อยากให้ความคิดแบบไหนติดอยู่หลังปิดเล่ม?", options:["ฉันเริ่มได้เสมอ","ฉันเลือกชีวิตตัวเองได้","ฉันไม่ต้องผ่านมันคนเดียว"] },
-];
+].slice(0, 5);
 
-export default function Home() {
+export type CupView = "landing" | "brew" | "discover" | "club" | "partners";
+
+export function CupExperience({ view = "landing" }: { view?: CupView }) {
   const [mood, setMood] = useState(moods[0]);
   const [saved, setSaved] = useState(2);
   const [concern, setConcern] = useState("คิดเยอะจนไม่เริ่ม");
@@ -41,6 +43,28 @@ export default function Home() {
     const timer = window.setInterval(() => setHeroIndex((current) => (current + 1) % heroCups.length), 4800);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const move = (event: PointerEvent) => {
+      document.documentElement.style.setProperty("--mouse-x", `${(event.clientX / innerWidth - .5) * 22}px`);
+      document.documentElement.style.setProperty("--mouse-y", `${(event.clientY / innerHeight - .5) * 22}px`);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    document.querySelector(".try-read")?.setAttribute("href", "/read/atomic-habits");
+    document.querySelector(".try-listen")?.setAttribute("href", "/club");
+    document.querySelector(".try-buy")?.setAttribute("href", "/discover#market");
+    document.querySelector(".recipe-actions a")?.setAttribute("href", "/read/atomic-habits");
+    return () => window.removeEventListener("pointermove", move);
+  }, [brewState]);
+
+  useEffect(() => {
+    const progress = document.querySelector<HTMLElement>(".journey-progress span");
+    const ingredients = document.querySelector<HTMLElement>(".live-cup-side .eyebrow");
+    const cupCount = document.querySelector<HTMLElement>(".empty-cup > b");
+    if (progress) progress.textContent = `${String(questionIndex + 1).padStart(2, "0")} / 05`;
+    if (ingredients) ingredients.textContent = `YOUR CUP · ${brewAnswers.length}/5 INGREDIENTS`;
+    if (cupCount && brewAnswers.length > 0) cupCount.textContent = `${brewAnswers.length} / 5`;
+  }, [questionIndex, brewAnswers]);
 
   const startBrewing = () => {
     setBrewState("brewing");
@@ -62,10 +86,10 @@ export default function Home() {
   const resetBrew = () => { setBrewAnswers([]); setQuestionIndex(0); setBrewState("idle"); };
 
   return (
-    <main id="top">
+    <main id="top" className={`cup-view view-${view}`}>
       <nav className="nav">
-        <a className="logo" href="#top"><span>CUP</span><i>of</i><span>US</span></a>
-        <div className="nav-links useful-nav"><a className="nav-search" href="#menu">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="#brew">ชงแก้วของฉัน</a><a href="#market">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>
+        <a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a>
+        <div className="nav-links useful-nav"><a className="nav-search" href="/discover">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="/brew">ชงแก้วของฉัน</a><a href="/club">Cup (Club)</a><a href="/partners">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>
         <a className="cup-count" href="/profile">My Cups <b>{saved}</b></a>
       </nav>
 
@@ -75,7 +99,7 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow">A LITTLE BOOK CAFÉ FOR EVERY KIND OF US</p>
           <div className="hero-variant-copy" key={`copy-${heroIndex}`}><span className="variant-count">0{heroIndex + 1} / 03 · {heroCups[heroIndex].name}</span><h1>Find a book<br />that feels like<br /><em>your cup of tea.</em></h1><p className="variant-book">NOW SERVING · {heroCups[heroIndex].book}</p><p className="thai-lead">{heroCups[heroIndex].label}<br />หนังสือและส่วนผสมที่เหมาะกับคุณในช่วงเวลานี้</p></div>
-          <div className="hero-actions"><a className="main-cta" href="#brew">BREW YOURS <span>↓</span></a><div className="variant-controls"><button onClick={()=>setHeroIndex((heroIndex+heroCups.length-1)%heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>{heroCups.map((cup,index)=><button className={heroIndex===index?"active":""} onClick={()=>setHeroIndex(index)} type="button" aria-label={cup.name} key={cup.name}></button>)}<button onClick={()=>setHeroIndex((heroIndex+1)%heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button></div></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>BREW YOURS</b><small>ชงแก้วที่เป็นคุณ</small><span>→</span></a><div className="variant-controls"><button onClick={()=>setHeroIndex((heroIndex+heroCups.length-1)%heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>{heroCups.map((cup,index)=><button className={heroIndex===index?"active":""} onClick={()=>setHeroIndex(index)} type="button" aria-label={cup.name} key={cup.name}></button>)}<button onClick={()=>setHeroIndex((heroIndex+1)%heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button></div></div>
         </div>
 
         <div className="hero-cup rotating-cup" style={{"--cup-color":heroCups[heroIndex].color,"--cup-accent":heroCups[heroIndex].accent} as React.CSSProperties} key={`cup-${heroIndex}`} aria-hidden="true">
@@ -84,6 +108,7 @@ export default function Home() {
           <div className="cup-handle"></div><div className="saucer"></div>
           <p>{heroCups[heroIndex].mix.map(item=><span key={item}>{item}</span>)}</p>
         </div>
+        <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>
       </section>
 
@@ -195,4 +220,8 @@ export default function Home() {
       <footer><a className="logo footer-logo" href="#top"><span>CUP</span><i>of</i><span>US</span></a><p>Different cups for different us.<br />Better, together.</p><div><a href="#menu">Book Menu</a><a href="#club">Club</a><a href="#stories">Stories</a><a href="#top">Instagram</a></div><small>BREWED WITH CARE IN BANGKOK · 2026</small></footer>
     </main>
   );
+}
+
+export default function Home() {
+  return <CupExperience view="landing" />;
 }
