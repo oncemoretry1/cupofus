@@ -102,11 +102,21 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
           <div className="hero-actions"><a className="main-cta" href="/brew"><b>BREW YOURS</b><small>ชงแก้วที่เป็นคุณ</small><span>→</span></a><div className="variant-controls"><button onClick={()=>setHeroIndex((heroIndex+heroCups.length-1)%heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>{heroCups.map((cup,index)=><button className={heroIndex===index?"active":""} onClick={()=>setHeroIndex(index)} type="button" aria-label={cup.name} key={cup.name}></button>)}<button onClick={()=>setHeroIndex((heroIndex+1)%heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button></div></div>
         </div>
 
-        <div className="hero-cup rotating-cup" style={{"--cup-color":heroCups[heroIndex].color,"--cup-accent":heroCups[heroIndex].accent} as React.CSSProperties} key={`cup-${heroIndex}`} aria-hidden="true">
-          <div className="steam">〰<br />〰</div>
-          <div className="falling-mix"><i></i><i></i><i></i></div><div className="cup-body"><div className="hero-fill"></div><span>cup<br /><i>of</i><br />us</span><div className="riso-face">•‿•</div></div>
-          <div className="cup-handle"></div><div className="saucer"></div>
-          <p>{heroCups[heroIndex].mix.map(item=><span key={item}>{item}</span>)}</p>
+        <div className="hero-cup-carousel" aria-label="เมนูแก้วหนังสือแนะนำ">
+          {heroCups.map((cup, index) => {
+            const previous = (heroIndex + heroCups.length - 1) % heroCups.length;
+            const position = index === heroIndex ? "is-active" : index === previous ? "is-left" : "is-right";
+            return <button className={`carousel-cup ${position}`} onClick={() => setHeroIndex(index)} type="button" aria-label={`เลือก ${cup.name}`} aria-current={index === heroIndex ? "true" : undefined} key={cup.name}>
+              <span className="hero-cup rotating-cup" style={{"--cup-color":cup.color,"--cup-accent":cup.accent} as React.CSSProperties}>
+                <span className="steam">〰<br />〰</span>
+                <span className="falling-mix"><i></i><i></i><i></i></span><span className="cup-body"><span className="hero-fill"></span><span>cup<br /><i>of</i><br />us</span><span className="riso-face">•‿•</span></span>
+                <span className="cup-handle"></span><span className="saucer"></span>
+                <span className="cup-recipe">{cup.mix.map(item=><span key={item}>{item}</span>)}</span>
+              </span>
+            </button>;
+          })}
+          <button className="carousel-arrow carousel-prev" onClick={() => setHeroIndex((heroIndex + heroCups.length - 1) % heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>
+          <button className="carousel-arrow carousel-next" onClick={() => setHeroIndex((heroIndex + 1) % heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>
