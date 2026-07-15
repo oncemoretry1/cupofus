@@ -51,3 +51,4 @@
 .carousel-arrow{width:38px;height:38px}
 @media(max-width:1000px){.hero{padding-top:105px;gap:20px}.hero-copy{max-width:620px}.hero h1{font-size:clamp(60px,10vw,78px);line-height:.88;letter-spacing:-4px}.hero-cup-carousel{width:min(100%,600px);height:420px}.sticker-one{display:none}}
 @media(max-width:650px){.hero{padding-top:88px}.hero h1{font-size:56px;line-height:.9;letter-spacing:-3px}.hero-actions .main-cta{min-width:220px}.hero-cup-carousel{height:340px;width:calc(100vw - 24px);transform:scale(.72);transform-origin:top center}.carousel-cup.is-left{transform:translateX(-95%) translateY(58px) scale(.55)}.carousel-cup.is-right{transform:translateX(-5%) translateY(58px) scale(.55)}.carousel-arrow{top:55%}}
+.carousel-cup .cup-recipe{right:-76px;bottom:42px;min-width:178px;padding:14px 16px;border-width:2.5px;transform:rotate(-6deg);box-shadow:4px 4px 0 rgba(23,47,43,.16)}.carousel-cup .cup-recipe>span{font-size:11px;line-height:1.55}
