@@ -1,12 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const moods = ["อยากเริ่มใหม่", "ใจล้าไปหน่อย", "อยากมีวินัย", "กำลังตามหาตัวเอง"];
 const cups = [
   { title: "Atomic Habits", thai: "เพราะชีวิตดีได้กว่าที่เป็น", taste: "เบา · ทำง่าย · ดื่มได้ทุกวัน", color: "yellow", icon: "A", note: "สำหรับวันที่อยากเปลี่ยน แต่ไม่อยากฝืน" },
   { title: "The Courage to Be Disliked", thai: "กล้าที่จะถูกเกลียด", taste: "เข้ม · ตรง · ทิ้งรสไว้นาน", color: "blue", icon: "C", note: "สำหรับวันที่เสียงคนอื่นดังเกินเสียงของเรา" },
   { title: "Maybe You Should Talk to Someone", thai: "เพราะนี่คือสิ่งที่นักบำบัดอยากบอก", taste: "อุ่น · หวานน้อย · ปลอบใจ", color: "pink", icon: "M", note: "สำหรับวันที่อยากเข้าใจใจตัวเองอีกนิด" },
+];
+const heroCups = [
+  { name: "Cup of Courage", book: "The Courage to Be Disliked", color: "#75c8d3", accent: "#e94d3f", label: "กล้าที่จะเลือกชีวิตของตัวเอง", mix: ["40% ความกล้า", "35% อิสระ", "25% การยอมรับ"] },
+  { name: "Cup of Tiny Starts", book: "Atomic Habits", color: "#f5e545", accent: "#75c8d3", label: "เริ่มเล็กพอที่จะไม่ต้องรอวันพร้อม", mix: ["45% ระบบ", "35% ตัวตน", "20% ทำซ้ำ"] },
+  { name: "Cup of Calm", book: "Maybe You Should Talk to Someone", color: "#f39aa6", accent: "#eb8b45", label: "แก้วอุ่นสำหรับวันที่ใจทำงานหนัก", mix: ["40% เข้าใจ", "35% รับฟัง", "25% ใจดี"] },
+];
+const brewQuestions = [
+  { label:"BASE", question:"ช่วงนี้ อะไรค้างอยู่ในใจ?", options:["คิดเยอะจนไม่เริ่ม","เหนื่อยกับความคาดหวัง","อยากรู้ว่าตัวเองต้องการอะไร"] },
+  { label:"MOOD", question:"เช้าวันนี้ ใจของคุณเป็นสีอะไร?", options:["ฟ้าโปร่ง พร้อมลอง","เทา ๆ อยากพัก","ส้มสด อยากลุย"] },
+  { label:"FLAVOUR", question:"อยากให้หนังสือพูดกับคุณแบบไหน?", options:["นุ่มและค่อยเป็นค่อยไป","ตรง เข้ม และปลุกให้ตื่น","อบอุ่นเหมือนเพื่อนนั่งฟัง"] },
+  { label:"ENERGY", question:"พลังของคุณตอนนี้เหลือประมาณไหน?", options:["น้อย ขอเริ่มเบา ๆ","พอดี พร้อมขยับ","เต็มแก้ว พร้อมเปลี่ยน"] },
+  { label:"FOCUS", question:"เรื่องไหนที่อยากดูแลมากที่สุด?", options:["ความสัมพันธ์กับตัวเอง","งานและเป้าหมาย","ความสัมพันธ์กับคนอื่น"] },
+  { label:"TEMPERATURE", question:"คุณต้องการความรู้สึกแบบไหนหลังอ่าน?", options:["ใจเย็นลง","มีไฟขึ้น","เห็นตัวเองชัดขึ้น"] },
+  { label:"TEXTURE", question:"คุณชอบเนื้อหาแบบไหน?", options:["เรื่องเล่าอ่านลื่น","ไอเดียพร้อมใช้","บทสนทนาชวนคิด"] },
+  { label:"SWEETNESS", question:"วันนี้อยากได้รับกำลังใจแค่ไหน?", options:["หวานน้อย เน้นความจริง","พอดี ๆ มีทั้งปลอบและผลัก","เติมเต็ม ขอความอ่อนโยน"] },
+  { label:"SIZE", question:"ตอนนี้มีพื้นที่ให้การอ่านแค่ไหน?", options:["วันละ 10 นาที","หนึ่งบทก่อนนอน","พร้อมอ่านยาว ๆ"] },
+  { label:"AFTERTASTE", question:"อยากให้ความคิดแบบไหนติดอยู่หลังปิดเล่ม?", options:["ฉันเริ่มได้เสมอ","ฉันเลือกชีวิตตัวเองได้","ฉันไม่ต้องผ่านมันคนเดียว"] },
 ];
 
 export default function Home() {
@@ -15,14 +32,41 @@ export default function Home() {
   const [concern, setConcern] = useState("คิดเยอะจนไม่เริ่ม");
   const [flavor, setFlavor] = useState("นุ่มและค่อยเป็นค่อยไป");
   const [time, setTime] = useState("วันละ 10 นาที");
-  const [brewed, setBrewed] = useState(false);
+  const [brewState, setBrewState] = useState<"idle" | "brewing" | "ready">("idle");
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [brewAnswers, setBrewAnswers] = useState<string[]>([]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setHeroIndex((current) => (current + 1) % heroCups.length), 4800);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const startBrewing = () => {
+    setBrewState("brewing");
+    window.setTimeout(() => setBrewState("ready"), 3200);
+  };
+
+  const answerBrewQuestion = (answer: string) => {
+    const nextAnswers = [...brewAnswers, answer];
+    setBrewAnswers(nextAnswers);
+    if (questionIndex === 0) setConcern(answer);
+    if (questionIndex === 2) setFlavor(answer);
+    if (questionIndex === 8) setTime(answer);
+    if (questionIndex === brewQuestions.length - 1) {
+      setBrewState("brewing");
+      window.setTimeout(() => setBrewState("ready"), 2400);
+    } else window.setTimeout(() => setQuestionIndex((current) => current + 1), 240);
+  };
+
+  const resetBrew = () => { setBrewAnswers([]); setQuestionIndex(0); setBrewState("idle"); };
 
   return (
     <main id="top">
       <nav className="nav">
         <a className="logo" href="#top"><span>CUP</span><i>of</i><span>US</span></a>
-        <div className="nav-links"><a href="#menu">Cup Menu</a><a href="#club">Cup (Club)</a><a href="#stories">Our Stories</a></div>
-        <button className="cup-count" onClick={() => setSaved(saved + 1)} type="button">My Cup <b>{saved}</b></button>
+        <div className="nav-links useful-nav"><a className="nav-search" href="#menu">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="#brew">ชงแก้วของฉัน</a><a href="#market">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>
+        <a className="cup-count" href="/profile">My Cups <b>{saved}</b></a>
       </nav>
 
       <section className="hero">
@@ -30,31 +74,30 @@ export default function Home() {
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
           <p className="eyebrow">A LITTLE BOOK CAFÉ FOR EVERY KIND OF US</p>
-          <h1>Find a book<br />that feels like<br /><em>your cup of tea.</em></h1>
-          <p className="thai-lead">หนังสือแต่ละเล่มก็เหมือนเครื่องดื่มหนึ่งแก้ว<br />มีส่วนผสม รสชาติ และช่วงเวลาที่เหมาะกับแต่ละคน</p>
-          <a className="main-cta" href="#brew">ชงแก้วที่เป็นคุณ <span>↓</span></a>
+          <div className="hero-variant-copy" key={`copy-${heroIndex}`}><span className="variant-count">0{heroIndex + 1} / 03 · {heroCups[heroIndex].name}</span><h1>Find a book<br />that feels like<br /><em>your cup of tea.</em></h1><p className="variant-book">NOW SERVING · {heroCups[heroIndex].book}</p><p className="thai-lead">{heroCups[heroIndex].label}<br />หนังสือและส่วนผสมที่เหมาะกับคุณในช่วงเวลานี้</p></div>
+          <div className="hero-actions"><a className="main-cta" href="#brew">BREW YOURS <span>↓</span></a><div className="variant-controls"><button onClick={()=>setHeroIndex((heroIndex+heroCups.length-1)%heroCups.length)} type="button" aria-label="แก้วก่อนหน้า">←</button>{heroCups.map((cup,index)=><button className={heroIndex===index?"active":""} onClick={()=>setHeroIndex(index)} type="button" aria-label={cup.name} key={cup.name}></button>)}<button onClick={()=>setHeroIndex((heroIndex+1)%heroCups.length)} type="button" aria-label="แก้วถัดไป">→</button></div></div>
         </div>
 
-        <div className="hero-cup" aria-hidden="true">
+        <div className="hero-cup rotating-cup" style={{"--cup-color":heroCups[heroIndex].color,"--cup-accent":heroCups[heroIndex].accent} as React.CSSProperties} key={`cup-${heroIndex}`} aria-hidden="true">
           <div className="steam">〰<br />〰</div>
-          <div className="cup-body"><span>cup<br /><i>of</i><br />us</span><div className="riso-face">•‿•</div></div>
+          <div className="falling-mix"><i></i><i></i><i></i></div><div className="cup-body"><div className="hero-fill"></div><span>cup<br /><i>of</i><br />us</span><div className="riso-face">•‿•</div></div>
           <div className="cup-handle"></div><div className="saucer"></div>
-          <p>ONE CUP,<br />MANY STORIES</p>
+          <p>{heroCups[heroIndex].mix.map(item=><span key={item}>{item}</span>)}</p>
         </div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>
       </section>
 
       <section className="ticker"><div>CUP OF COURAGE ✦ CUP OF CALM ✦ CUP OF CURIOSITY ✦ CUP OF CHANGE ✦ CUP OF COURAGE ✦ CUP OF CALM ✦</div></section>
 
-      <section className="brew-section" id="brew">
-        <div className="brew-intro"><span className="section-no">00</span><p className="eyebrow">BREW YOUR OWN CUP</p><h2>ลองชงแก้ว<br /><em>ที่เป็นคุณ</em></h2><p>ไม่มีสูตรเดียวที่เหมาะกับทุกคน เลือกส่วนผสมจากสิ่งที่กำลังรู้สึก แล้วเราจะเสิร์ฟหนังสือที่น่าจะคุยกับคุณรู้เรื่องที่สุดในตอนนี้</p><div className="brew-doodle">YOU + THIS MOMENT<br /><b>= YOUR CUP!</b></div></div>
-        <div className="brew-lab">
-          {!brewed ? <>
-            <div className="brew-question"><span>01 · BASE</span><h3>ช่วงนี้ อะไรค้างอยู่ในใจ?</h3><div>{["คิดเยอะจนไม่เริ่ม","เหนื่อยกับความคาดหวัง","อยากรู้ว่าตัวเองต้องการอะไร"].map(x=><button className={concern===x?"selected":""} onClick={()=>setConcern(x)} type="button" key={x}>{x}</button>)}</div></div>
-            <div className="brew-question"><span>02 · FLAVOUR</span><h3>อยากให้หนังสือพูดกับคุณแบบไหน?</h3><div>{["นุ่มและค่อยเป็นค่อยไป","ตรง เข้ม และปลุกให้ตื่น","อบอุ่นเหมือนเพื่อนนั่งฟัง"].map(x=><button className={flavor===x?"selected":""} onClick={()=>setFlavor(x)} type="button" key={x}>{x}</button>)}</div></div>
-            <div className="brew-question"><span>03 · SIZE</span><h3>ตอนนี้มีพื้นที่ให้การอ่านแค่ไหน?</h3><div>{["วันละ 10 นาที","หนึ่งบทก่อนนอน","พร้อมอ่านยาว ๆ"].map(x=><button className={time===x?"selected":""} onClick={()=>setTime(x)} type="button" key={x}>{x}</button>)}</div></div>
-            <button className="brew-button" onClick={()=>setBrewed(true)} type="button">BREW MY CUP <span>☕</span></button>
-          </> : <div className="brew-result"><p className="eyebrow">YOUR CUP IS READY!</p><div className="result-mug"><b>{concern.includes("เหนื่อย")?"CALM":concern.includes("ตัวเอง")?"CLARITY":"START"}</b><span>•‿•</span></div><h3>{concern.includes("เหนื่อย")?"The Gentle Oat Latte":concern.includes("ตัวเอง")?"The Clear Mind Americano":"The Tiny Start Flat White"}</h3><p className="result-book">เสิร์ฟคู่กับ <b>{concern.includes("เหนื่อย")?"Maybe You Should Talk to Someone":concern.includes("ตัวเอง")?"The Courage to Be Disliked":"Atomic Habits"}</b></p><p>เพราะคุณกำลัง “{concern}” และอยากได้คำแนะนำที่ “{flavor}” ในจังหวะ “{time}” แก้วนี้จึงเน้นความคิดที่ใช้ได้จริงโดยไม่เร่งคุณเกินไป</p><div className="result-tags"><span>40% เข้าใจตัวเอง</span><span>35% ลงมือแบบเล็ก</span><span>25% ใจดีกับตัวเอง</span></div><div className="result-actions"><a href="#recipe">ดูหนังสือที่จับคู่ให้ →</a><button onClick={()=>setBrewed(false)} type="button">ชงใหม่ ↻</button></div></div>}
+      <section className="brew-section journey-section" id="brew">
+        <div className="brew-intro compact"><span className="section-no">00</span><p className="eyebrow">BREW YOUR OWN CUP</p><h2>ตอบหนึ่งข้อ<br /><em>เติมหนึ่งส่วนผสม</em></h2><p>เริ่มจากแก้วเปล่า แล้วค่อย ๆ เติมความรู้สึก ความสนใจ และจังหวะการอ่านของคุณทีละข้อ</p></div>
+        <div className="brew-lab journey-lab">
+          {brewState === "idle" ? <div className="brew-journey"><div className="question-side"><div className="journey-progress"><span>{String(questionIndex + 1).padStart(2,"0")} / 10</span><div><i style={{width:`${questionIndex * 10}%`}}></i></div></div><div className="single-question" key={questionIndex}><span>{String(questionIndex + 1).padStart(2,"0")} · {brewQuestions[questionIndex].label}</span><h3>{brewQuestions[questionIndex].question}</h3><div>{brewQuestions[questionIndex].options.map(option=><button onClick={()=>answerBrewQuestion(option)} type="button" key={option}>{option}<i>＋</i></button>)}</div></div><p className="question-hint">เลือกคำตอบที่ใกล้กับตอนนี้ที่สุด ไม่มีคำตอบผิด ☺</p></div><div className="live-cup-side"><p className="eyebrow">YOUR CUP · {brewAnswers.length}/10 INGREDIENTS</p><div className="empty-cup"><div className="cup-layers">{brewAnswers.map((answer,index)=><i className={`layer layer-${index%5}`} title={answer} key={`${answer}-${index}`}></i>)}</div><b>{brewAnswers.length === 0 ? "EMPTY" : `${brewAnswers.length} / 10`}</b><span>{brewAnswers.length === 0 ? "เริ่มจากแก้วเปล่า" : "ส่วนผสมกำลังเข้ากัน"}</span></div><div className="added-ingredients">{brewAnswers.slice(-3).map((answer,index)=><span key={`${answer}-${index}`}>＋ {answer}</span>)}</div></div></div> : brewState === "brewing" ? <div className="brewing-scene" aria-live="polite">
+            <p className="eyebrow">BREWING YOUR CUP...</p>
+            <div className="ingredient ingredient-one"><i></i><b>{concern}</b></div><div className="ingredient ingredient-two"><i></i><b>{flavor}</b></div><div className="ingredient ingredient-three"><i></i><b>{time}</b></div>
+            <div className="animated-steam"><i></i><i></i><i></i></div><div className="brewing-mug"><div className="coffee-liquid"><span></span></div><b>CUP<br/>OF<br/>YOU</b></div><div className="stirrer"></div>
+            <div className="brew-progress"><span></span></div><p className="brew-status">กำลังชั่งความรู้สึก เติมความอยากรู้ และคนให้เข้ากัน...</p>
+          </div> : <div className="brew-result"><p className="eyebrow">YOUR CUP IS READY!</p><div className="result-layout"><div className={`result-cover ${concern.includes("เหนื่อย")?"cover-talk":concern.includes("ตัวเอง")?"cover-courage":"cover-atomic"}`}><small>{concern.includes("เหนื่อย")?"LORI GOTTLIEB":concern.includes("ตัวเอง")?"ICHIRO KISHIMI":"JAMES CLEAR"}</small><b>{concern.includes("เหนื่อย")?<>MAYBE YOU<br/>SHOULD TALK<br/>TO SOMEONE</>:concern.includes("ตัวเอง")?<>THE COURAGE<br/>TO BE<br/>DISLIKED</>:<>ATOMIC<br/>HABITS</>}</b><span>CUP OF US MATCH</span></div><div className="result-copy"><h3>{concern.includes("เหนื่อย")?"The Gentle Oat Latte":concern.includes("ตัวเอง")?"The Clear Mind Americano":"The Tiny Start Flat White"}</h3><p className="result-book">เสิร์ฟคู่กับ <b>{concern.includes("เหนื่อย")?"Maybe You Should Talk to Someone":concern.includes("ตัวเอง")?"The Courage to Be Disliked":"Atomic Habits"}</b></p><p>เพราะคุณกำลัง “{concern}” และอยากได้คำแนะนำที่ “{flavor}” ในจังหวะ “{time}” แก้วนี้จึงเน้นความคิดที่ใช้ได้จริงโดยไม่เร่งคุณเกินไป</p><div className="result-tags"><span>40% เข้าใจตัวเอง</span><span>35% ลงมือแบบเล็ก</span><span>25% ใจดีกับตัวเอง</span></div></div></div><div className="taste-actions"><a className="try-read" href="#recipe"><b>Aa</b><span>ลองอ่าน<small>บทสรุป 5 นาที</small></span></a><a className="try-listen" href="#club"><b>▶</b><span>ลองฟัง<small>Podcast 12 นาที</small></span></a><a className="try-buy" href="#market"><b>↗</b><span>ลองซื้อ<small>เปรียบเทียบหลายร้าน</small></span></a></div><button className="retry-brew" onClick={resetBrew} type="button">ชงใหม่อีกแก้ว ↻</button></div>}
         </div>
       </section>
 
@@ -130,7 +173,7 @@ export default function Home() {
       </section>
 
       <section className="club-section" id="club">
-        <div className="club-title"><p className="eyebrow">MORE THAN A BOOK CLUB</p><h2>Cup <i>(Club)</i><br />of Us</h2><p>ร้านกาแฟสมมติ ที่เราเอาหนังสือ ความคิด และตัวเองเวอร์ชันที่อยากเป็น มานั่งคุยโต๊ะเดียวกัน</p></div>
+        <div className="club-title"><p className="eyebrow">MORE THAN A BOOK CLUB</p><h2>Cup<br /><i>of Us</i></h2><p>ร้านกาแฟสมมติ ที่เราเอาหนังสือ ความคิด และตัวเองเวอร์ชันที่อยากเป็น มานั่งคุยโต๊ะเดียวกัน</p></div>
         <div className="events">
           <article><time>27 JUL</time><div><span>Sunday Slow Read</span><h3>อ่านช้า ๆ กับหนังสือที่ยังอ่านไม่จบ</h3><p>10:00–12:00 · Online Table</p></div><button type="button">↗</button></article>
           <article><time>03 AUG</time><div><span>One Cup Conversation</span><h3>นิสัยเล็ก ๆ ที่ทำให้ปีนี้ต่างออกไป</h3><p>14:00–15:30 · Bangkok</p></div><button type="button">↗</button></article>
