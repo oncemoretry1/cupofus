@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { BookEntrance } from "../../components/BookEntrance";
+import { BookInfographic } from "../../components/BookInfographic";
 
 type Book = {
   slug: string;
@@ -109,6 +110,7 @@ export default function DynamicReadPage() {
         </section>
         <section id="ideas">
           <span className="chapter-no">02</span><h2>แนวคิดสำคัญ</h2>
+          <BookInfographic title={book.title} summary={book.summary} tags={tags} concerns={book.concerns.split(",")} />
           <div className="idea-card">{tags.map((tag, index) => <div key={tag}><b>0{index + 1} · {tag}</b><span>{index === 0 ? "เริ่มจากการสังเกตสิ่งที่เกิดขึ้นจริงในชีวิตของเรา" : index === 1 ? "ออกแบบการกระทำและสภาพแวดล้อมให้สอดคล้องกับสิ่งที่ให้คุณค่า" : "ทดลองทีละน้อย ทบทวน และปรับโดยไม่ตัดสินตัวเอง"}</span></div>)}</div>
         </section>
         <section id="practice">
