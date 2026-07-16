@@ -18,3 +18,16 @@
 @media(max-width:1100px){.view-landing .hero{width:calc(100% - 36px);height:auto;min-height:0;grid-template-columns:1fr;gap:0;margin-top:24px;background:var(--cream)}.view-landing .hero-copy{max-width:none;margin:0;padding:54px 44px}.view-landing .hero-cup-carousel{width:100%;min-height:650px;margin:0;background:#c9e9ec;border-top:2px solid var(--ink)}.view-landing .hook-headline>span,.view-landing .hook-headline>em{white-space:normal}.hook-process{width:calc(100% - 36px);padding:0 24px}.hook-process>div{padding:18px 16px}}
 @media(max-width:720px){.view-landing .hero{width:calc(100% - 24px);min-height:0;margin-top:14px}.view-landing .hero-copy{padding:38px 22px}.view-landing .hero h1.hook-headline{font-size:clamp(48px,13.5vw,66px);line-height:.96;letter-spacing:-1.8px;margin:20px 0}.view-landing .hero-question{font-size:11px}.view-landing .hero-support{font-size:16px;line-height:1.65}.hook-proof{width:100%;display:grid;grid-template-columns:repeat(2,1fr)}.hook-proof span,.hook-proof span:first-child{padding:7px 10px;border-right:1px solid var(--ink)}.hook-proof span:nth-child(2){border-right:0}.hook-proof span:nth-child(-n+2){border-bottom:1px solid var(--ink)}.view-landing .hero-actions{align-items:flex-start;flex-direction:column;gap:12px}.view-landing .hero-actions .main-cta{width:100%;min-width:0;height:68px}.view-landing .cta-note{max-width:none}.view-landing .hero-cup-carousel{height:540px;min-height:540px;width:100%;margin:0;transform:none}.view-landing .carousel-cup{top:24px}.view-landing .carousel-cup.is-active{transform:translateX(-50%) scale(.68)}.view-landing .carousel-caption{bottom:45px;width:calc(100% - 24px)}.view-landing .carousel-pagination{bottom:10px}.view-landing .cup-recipe{right:-38px;min-width:190px}.hook-process{width:calc(100% - 24px);grid-template-columns:1fr;padding:0;margin-bottom:24px}.hook-process>div,.hook-process>div:first-child{padding:18px 20px;border-right:0;border-bottom:1px solid #60716d}.hook-process>div:last-child{border-bottom:0}}
 @media(prefers-reduced-motion:reduce){.view-landing .hero-cup-carousel{touch-action:auto}}
+
+/* Desktop landing uses the complete viewport below navigation. */
+@media(min-width:1101px){
+  .view-landing{height:100svh;min-height:760px;overflow:hidden}
+  .view-landing .hero{
+    flex:1 1 auto;width:100%;max-width:none;height:calc(100svh - 198px);
+    min-height:650px;margin:0;border-left:0;border-right:0;box-shadow:none;
+    grid-template-columns:minmax(620px,1.08fr) minmax(520px,.92fr);
+  }
+  .view-landing .hero-copy{padding:clamp(42px,4vw,76px) clamp(52px,7vw,140px)}
+  .view-landing .hero-cup-carousel{min-height:100%;height:100%}
+  .hook-process{flex:0 0 112px;width:100%;max-width:none;min-height:112px;margin:0;border-left:0;border-right:0}
+}
