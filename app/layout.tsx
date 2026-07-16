@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { PwaRegister } from "./components/PwaRegister";
 import { MorphTransition } from "./components/MorphTransition";
+import { MobileTabBar } from "./components/MobileTabBar";
 import "./globals.css";
 import "./typography.css";
 import "./centered-layout.css";
+import "./mobile-nav.css";
 
 export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
@@ -24,5 +26,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="th"><body><PwaRegister /><MorphTransition />{children}</body></html>;
+  return <html lang="th"><body><PwaRegister /><MorphTransition />{children}<MobileTabBar /></body></html>;
 }

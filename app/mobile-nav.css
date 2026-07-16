@@ -1,0 +1,19 @@
+.mobile-tab-bar{display:none}
+@media(max-width:720px){
+  html{scroll-padding-bottom:92px}
+  body{padding-bottom:78px!important}
+  :where(button,a,input,select,textarea){font-size:16px}
+  :where(button,a){min-height:44px}
+  .mobile-tab-bar{position:fixed;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));height:68px;padding:5px 6px;z-index:110;border:2px solid var(--ink);border-radius:18px;background:rgba(255,253,245,.96);box-shadow:5px 5px 0 var(--ink);backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch}
+  .mobile-tab-bar>a{min-width:0;min-height:54px;padding:3px 2px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ink)}
+  .mobile-tab-bar>a.is-active{background:var(--yellow);box-shadow:2px 2px 0 var(--ink)}
+  .mobile-tab-bar>a>i{width:28px;height:28px;border:1.5px solid transparent;border-radius:50%;display:grid;place-items:center;font:800 16px/1 Arial;font-style:normal}
+  .mobile-tab-bar>a.is-active>i{border-color:var(--ink);background:var(--cream)}
+  .mobile-tab-bar>a>span{max-width:100%;font:700 9px/1.1 "IBM Plex Sans Thai",Tahoma,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .catalog-nav{height:62px;padding:0 16px;position:sticky;top:0}.catalog-nav>div{display:none!important}.catalog-nav .logo{transform:scale(.88);transform-origin:left center}
+  .nav{height:62px!important;padding:0 16px!important;grid-template-columns:1fr auto!important}.nav>.nav-links,.nav>.cup-count{display:none!important}
+  .catalog-hero{padding:42px 18px 30px!important;grid-template-columns:1fr!important}.catalog-hero h1{font-size:clamp(48px,15vw,67px)!important;line-height:1.02!important;letter-spacing:-.04em!important}.catalog-hero>p:not(.eyebrow){font-size:16px!important}.catalog-hero label{margin-top:15px!important;grid-template-columns:42px 1fr!important}.catalog-hero label b{display:none}.catalog-hero input{min-width:0;padding:15px 3px!important;font-size:16px!important}.catalog-moods{padding:0 18px 22px!important}.catalog-moods button{font-size:13px!important}
+  .reader-story-page{padding-bottom:84px!important}.reader-story{padding-bottom:94px!important}.reader-story-controls{position:sticky;bottom:76px;z-index:4;background:var(--cream);border-radius:14px;padding:8px!important;box-shadow:0 -8px 20px rgba(23,47,43,.08)}
+  .club-page{padding-bottom:10px}.club-rail{position:sticky!important;top:62px!important;z-index:8;margin-inline:-12px;padding:6px 12px;background:rgba(243,237,218,.96);backdrop-filter:blur(8px)}.club-rail>nav{margin:0!important}.club-rail button{font-size:12px!important}.club-post-list{gap:13px!important}.club-post{border-radius:14px!important;box-shadow:4px 5px 0 var(--ink)!important}.club-post:before{width:48px!important}.club-stream-head{margin-top:28px!important}
+  .coffee-menu-section,.cup-detail-hero,.experience{scroll-margin-top:72px}.experience-grid{padding-bottom:86px}.profile-page,.partners-page,.brew-journey{padding-bottom:90px}
+}
