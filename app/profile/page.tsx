@@ -6,7 +6,7 @@ import "./profile.css";
 import "./onboarding.css";
 
 type Cup = { id:number; cupName:string; bookSlug:string; bookTitle:string; coverColor:string; answers:string };
-type User = { id:number; email:string; displayName:string };
+type User = { id:number; email:string; displayName:string; emailVerifiedAt:string|null };
 
 export default function ProfilePage() {
   const [name, setName] = useState("");
@@ -15,12 +15,13 @@ export default function ProfilePage() {
   const [cups, setCups] = useState<Cup[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const [authMode, setAuthMode] = useState<"login" | "signup" | "forgot">("login");
   const [authName, setAuthName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authMessage, setAuthMessage] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
+  const [devActionUrl, setDevActionUrl] = useState("");
 
   const load = async (id: string) => {
     const [profile, cupData] = await Promise.all([
@@ -61,22 +62,40 @@ export default function ProfilePage() {
     event.preventDefault();
     setAuthBusy(true);
     setAuthMessage("");
+    setDevActionUrl("");
     try {
-      const response = await fetch(`/api/auth/${authMode}`, { method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({ email, password, displayName:authName, guestId:guestId.current }) });
+      const endpoint = authMode === "forgot" ? "forgot-password" : authMode;
+      const response = await fetch(`/api/auth/${endpoint}`, { method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({ email, password, displayName:authName, guestId:guestId.current }) });
       const data = await response.json().catch(() => ({ error:"ระบบบัญชียังไม่พร้อม ลองใหม่อีกครั้งนะ" }));
       if (!response.ok) {
         setAuthMessage(data.error ?? "ยังเข้าสู่ระบบไม่ได้ ลองอีกครั้งนะ");
         return;
       }
+      if (authMode === "forgot") {
+        setAuthMessage("ถ้ามีบัญชีนี้ เราส่งลิงก์ตั้งรหัสผ่านใหม่ให้แล้ว กรุณาเช็กอีเมล");
+        setDevActionUrl(data.resetUrl ?? "");
+        return;
+      }
       setUser(data.user);
       setPassword("");
-      setAuthMessage("ย้ายแก้วจากอุปกรณ์นี้เข้าบัญชีให้แล้ว ✓");
+      setDevActionUrl(data.verificationUrl ?? "");
+      setAuthMessage(authMode === "signup" ? (data.emailSent ? "สร้างบัญชีแล้ว เช็กอีเมลเพื่อยืนยันบัญชีได้เลย ✓" : "สร้างบัญชีแล้ว ระบบอีเมลยังไม่ได้เชื่อม แต่คุณใช้งานต่อได้") : "เข้าสู่ระบบแล้ว ✓");
       await load(guestId.current);
     } catch {
       setAuthMessage("เชื่อมต่อระบบบัญชีไม่ได้ ลองใหม่อีกครั้งนะ");
     } finally {
       setAuthBusy(false);
     }
+  };
+
+  const resendVerification = async () => {
+    setAuthBusy(true);
+    setAuthMessage("");
+    const response = await fetch("/api/auth/resend-verification", { method:"POST" });
+    const data = await response.json().catch(() => ({}));
+    setAuthBusy(false);
+    setDevActionUrl(data.verificationUrl ?? "");
+    setAuthMessage(response.ok ? (data.emailSent ? "ส่งอีเมลยืนยันให้อีกครั้งแล้ว" : "สร้างลิงก์ยืนยันแล้ว แต่ระบบส่งอีเมลยังไม่ได้เชื่อม") : (data.error ?? "ยังส่งอีเมลซ้ำไม่ได้"));
   };
 
   const logout = async () => {
@@ -92,9 +111,9 @@ export default function ProfilePage() {
     <Link className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></Link>
     <section>
       <div className="account-panel">
-        {user ? <div className="signed-in-account"><span className="account-cup" aria-hidden="true"><i></i></span><div><p className="eyebrow">CUP OF US MEMBER</p><strong>{user.displayName}</strong><small>{user.email} · ซิงก์แก้วข้ามอุปกรณ์แล้ว</small></div><button onClick={logout} type="button">ออกจากระบบ</button></div> : <div className="auth-account">
+        {user ? <><div className="signed-in-account"><span className="account-cup" aria-hidden="true"><i></i></span><div><p className="eyebrow">CUP OF US MEMBER</p><strong>{user.displayName}</strong><small>{user.email} · {user.emailVerifiedAt?"ยืนยันอีเมลแล้ว":"รอยืนยันอีเมล"}</small></div><button onClick={logout} type="button">ออกจากระบบ</button></div>{!user.emailVerifiedAt&&<div className="verify-reminder"><div><b>ยืนยันอีเมลเพื่อรักษาแก้วของคุณไว้</b><span>ลิงก์มีอายุ 24 ชั่วโมง และใช้ได้ครั้งเดียว</span></div><button disabled={authBusy} onClick={resendVerification} type="button">ส่งลิงก์อีกครั้ง</button>{authMessage&&<p role="status">{authMessage}</p>}{devActionUrl&&<a href={devActionUrl}>เปิดลิงก์ทดสอบ →</a>}</div>}</> : <div className="auth-account">
           <div className="auth-account-copy"><p className="eyebrow">OPTIONAL MEMBER ACCOUNT</p><h2>เก็บแก้วไว้<br/>ไม่ว่าจะเปิดจากที่ไหน</h2><p>ใช้ต่อแบบ Guest ได้เสมอ หรือเข้าสู่ระบบเพื่อย้ายแก้วและประวัติจากเครื่องนี้เข้าบัญชี</p></div>
-          <div className="auth-form-wrap"><div className="auth-tabs"><button className={authMode==="login"?"active":""} onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">เข้าสู่ระบบ</button><button className={authMode==="signup"?"active":""} onClick={()=>{setAuthMode("signup");setAuthMessage("")}} type="button">สมัครสมาชิก</button></div><form onSubmit={authenticate}>{authMode==="signup"&&<label>ชื่อที่อยากให้เรียก<input value={authName} onChange={(event)=>setAuthName(event.target.value)} autoComplete="name" required maxLength={60}/></label>}<label>อีเมล<input value={email} onChange={(event)=>setEmail(event.target.value)} type="email" autoComplete="email" required/></label><label>รหัสผ่าน<input value={password} onChange={(event)=>setPassword(event.target.value)} type="password" autoComplete={authMode==="login"?"current-password":"new-password"} minLength={8} required/></label>{authMode==="signup"&&<small>อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</small>}<button className="auth-submit" disabled={authBusy} type="submit">{authBusy?"กำลังชงบัญชี...":authMode==="login"?"เข้าสู่ระบบ →":"สร้างบัญชี →"}</button>{authMessage&&<p className="auth-message" role="status">{authMessage}</p>}</form></div>
+          <div className="auth-form-wrap"><div className="auth-tabs"><button className={authMode==="login"?"active":""} onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">เข้าสู่ระบบ</button><button className={authMode==="signup"?"active":""} onClick={()=>{setAuthMode("signup");setAuthMessage("")}} type="button">สมัครสมาชิก</button></div><form onSubmit={authenticate}>{authMode==="signup"&&<label>ชื่อที่อยากให้เรียก<input value={authName} onChange={(event)=>setAuthName(event.target.value)} autoComplete="name" required maxLength={60}/></label>}<label>อีเมล<input value={email} onChange={(event)=>setEmail(event.target.value)} type="email" autoComplete="email" required/></label>{authMode!=="forgot"&&<label>รหัสผ่าน<input value={password} onChange={(event)=>setPassword(event.target.value)} type="password" autoComplete={authMode==="login"?"current-password":"new-password"} minLength={8} required/></label>}{authMode==="signup"&&<small>อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</small>}<button className="auth-submit" disabled={authBusy} type="submit">{authBusy?"กำลังชงบัญชี...":authMode==="login"?"เข้าสู่ระบบ →":authMode==="signup"?"สร้างบัญชี →":"ส่งลิงก์ตั้งรหัสผ่าน →"}</button>{authMode==="login"&&<button className="forgot-link" onClick={()=>{setAuthMode("forgot");setAuthMessage("")}} type="button">ลืมรหัสผ่าน?</button>}{authMode==="forgot"&&<button className="forgot-link" onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">← กลับไปเข้าสู่ระบบ</button>}{authMessage&&<p className="auth-message" role="status">{authMessage}</p>}{devActionUrl&&<a className="dev-auth-link" href={devActionUrl}>เปิดลิงก์ทดสอบ →</a>}</form></div>
         </div>}
       </div>
 

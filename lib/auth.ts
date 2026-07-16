@@ -1,10 +1,11 @@
-import { and, eq, gt } from "drizzle-orm";
+import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import { getDb } from "../db";
-import { authSessions, authUsers, creatorPosts, profiles, savedCups } from "../db/schema";
+import { authRateLimits, authSessions, authTokens, authUsers, creatorPosts, profiles, savedCups } from "../db/schema";
 
 const encoder = new TextEncoder();
 const SESSION_COOKIE = "cup_of_us_session";
 const SESSION_DAYS = 30;
+export type AuthTokenPurpose = "verify_email" | "password_reset";
 
 const toHex = (bytes: Uint8Array) => Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 const fromHex = (value: string) => new Uint8Array(value.match(/.{1,2}/g)?.map((byte) => Number.parseInt(byte, 16)) ?? []);
@@ -32,6 +33,50 @@ export async function hashSessionToken(token: string) {
   return toHex(new Uint8Array(digest));
 }
 
+export async function createAuthToken(userId: number, purpose: AuthTokenPurpose, lifetimeMinutes: number) {
+  const db = getDb();
+  await db.delete(authTokens).where(and(eq(authTokens.userId, userId), eq(authTokens.purpose, purpose), isNull(authTokens.usedAt)));
+  const token = toHex(crypto.getRandomValues(new Uint8Array(32)));
+  const expiresAt = new Date(Date.now() + lifetimeMinutes * 60 * 1000);
+  await db.insert(authTokens).values({ userId, purpose, tokenHash: await hashSessionToken(token), expiresAt });
+  return { token, expiresAt };
+}
+
+export async function consumeAuthToken(rawToken: unknown, purpose: AuthTokenPurpose) {
+  const token = String(rawToken ?? "");
+  if (!/^[a-f0-9]{64}$/.test(token)) return null;
+  const db = getDb();
+  const rows = await db.select({ id: authTokens.id, userId: authTokens.userId })
+    .from(authTokens)
+    .where(and(eq(authTokens.tokenHash, await hashSessionToken(token)), eq(authTokens.purpose, purpose), isNull(authTokens.usedAt), gt(authTokens.expiresAt, new Date())))
+    .limit(1);
+  if (!rows[0]) return null;
+  await db.update(authTokens).set({ usedAt: new Date() }).where(eq(authTokens.id, rows[0].id));
+  return rows[0];
+}
+
+function requestIp(request: Request) {
+  return request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+}
+
+export async function consumeRateLimit(request: Request, action: string, identifier: string, maximum: number, windowMinutes: number) {
+  const keyHash = await hashSessionToken(`${action}:${requestIp(request)}:${normalizeEmail(identifier)}`);
+  const db = getDb();
+  const now = new Date();
+  const current = (await db.select().from(authRateLimits).where(eq(authRateLimits.keyHash, keyHash)).limit(1))[0];
+  if (current && current.resetAt <= now) await db.delete(authRateLimits).where(eq(authRateLimits.id, current.id));
+  else if (current && current.attempts >= maximum) return { allowed: false, retryAfter: Math.max(1, Math.ceil((current.resetAt.getTime() - now.getTime()) / 1000)) };
+  const resetAt = new Date(now.getTime() + windowMinutes * 60 * 1000);
+  await db.insert(authRateLimits).values({ keyHash, attempts: 1, resetAt, updatedAt: now })
+    .onConflictDoUpdate({ target: authRateLimits.keyHash, set: { attempts: sql`${authRateLimits.attempts} + 1`, updatedAt: now } });
+  return { allowed: true, retryAfter: 0 };
+}
+
+export async function clearRateLimit(request: Request, action: string, identifier: string) {
+  const keyHash = await hashSessionToken(`${action}:${requestIp(request)}:${normalizeEmail(identifier)}`);
+  await getDb().delete(authRateLimits).where(eq(authRateLimits.keyHash, keyHash));
+}
+
 export async function createSession(userId: number) {
   const token = toHex(crypto.getRandomValues(new Uint8Array(32)));
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
@@ -57,7 +102,7 @@ export function clearSessionCookie(request: Request) {
 export async function getCurrentUser(request: Request) {
   const token = readSessionToken(request);
   if (!token) return null;
-  const rows = await getDb().select({ id: authUsers.id, email: authUsers.email, displayName: authUsers.displayName })
+  const rows = await getDb().select({ id: authUsers.id, email: authUsers.email, displayName: authUsers.displayName, emailVerifiedAt: authUsers.emailVerifiedAt })
     .from(authSessions).innerJoin(authUsers, eq(authSessions.userId, authUsers.id))
     .where(and(eq(authSessions.tokenHash, await hashSessionToken(token)), gt(authSessions.expiresAt, new Date()))).limit(1);
   return rows[0] ?? null;

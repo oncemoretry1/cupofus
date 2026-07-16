@@ -5,18 +5,22 @@ import test from "node:test";
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("landing and brew experience keep the seven-cup contract", async () => {
-  const page = await read("app/page.tsx");
+  const [page,quiz] = await Promise.all([read("app/page.tsx"),read("lib/brew-quiz.ts")]);
   const cups = page.match(/name:\s*"Cup of /g) ?? [];
-  const questionBlock = page.slice(page.indexOf("const brewQuestions"), page.indexOf("export default"));
-  const questions = questionBlock.match(/label:\s*"/g) ?? [];
-  const options = questionBlock.match(/options:\s*\[/g) ?? [];
+  const questions = quiz.match(/prompt:samePrompt\(/g) ?? [];
+  const options = quiz.match(/\{id:"[^"]+",label:/g) ?? [];
 
   assert.equal(cups.length, 7);
   assert.equal(questions.length, 7);
-  assert.equal(options.length, 7);
+  assert.equal(options.length, 35);
+  assert.match(quiz, /morning/);
+  assert.match(quiz, /afternoon/);
+  assert.match(quiz, /evening/);
+  assert.match(quiz, /night/);
   assert.match(page, /\/ 07/);
   assert.match(page, /\/7 INGREDIENTS/);
   assert.match(page, /\/api\/recommend/);
+  assert.match(page, /cup-of-us-last-profile/);
 });
 
 test("database ships fifty books and fifty media pairings", async () => {
@@ -76,17 +80,21 @@ test("featured books embed playable YouTube summaries and Spotify tracks", async
 });
 
 test("guest-first accounts use server sessions and migrate saved cups", async () => {
-  const [migration, auth, signup, login, profile, savedCups] = await Promise.all([
+  const [migration, recoveryMigration, auth, signup, login, profile, savedCups,mail] = await Promise.all([
     read("drizzle/0005_user_auth.sql"),
+    read("drizzle/0006_auth_recovery.sql"),
     read("lib/auth.ts"),
     read("app/api/auth/signup/route.ts"),
     read("app/api/auth/login/route.ts"),
     read("app/profile/page.tsx"),
     read("app/api/saved-cups/route.ts"),
+    read("lib/mail.ts"),
   ]);
 
   assert.match(migration, /CREATE TABLE `auth_users`/);
   assert.match(migration, /CREATE TABLE `auth_sessions`/);
+  assert.match(recoveryMigration, /CREATE TABLE `auth_tokens`/);
+  assert.match(recoveryMigration, /CREATE TABLE `auth_rate_limits`/);
   assert.match(auth, /PBKDF2/);
   assert.match(auth, /210_000/);
   assert.match(auth, /HttpOnly; SameSite=Lax/);
@@ -94,7 +102,26 @@ test("guest-first accounts use server sessions and migrate saved cups", async ()
   assert.match(auth, /update\(savedCups\)/);
   assert.match(signup, /hashPassword/);
   assert.match(login, /verifyPassword/);
-  assert.match(profile, /\/api\/auth\/\$\{authMode\}/);
+  assert.match(profile, /\/api\/auth\/\$\{endpoint\}/);
   assert.match(profile, /OPTIONAL MEMBER ACCOUNT/);
+  assert.match(profile, /forgot-password/);
+  assert.match(profile, /resend-verification/);
   assert.match(savedCups, /getCurrentUser/);
+  assert.match(mail, /api\.resend\.com\/emails/);
+});
+
+test("cup result explains personality and supports contextual refills", async () => {
+  const [detail,recommendation,quiz] = await Promise.all([
+    read("app/cup/[slug]/page.tsx"),
+    read("app/api/recommend/route.ts"),
+    read("lib/brew-quiz.ts"),
+  ]);
+  assert.match(detail,/personality-donut/);
+  assert.match(detail,/กราฟนี้สะท้อนคำตอบและพลังของคุณในเวลานี้/);
+  assert.match(detail,/ขอแก้วเบากว่านี้/);
+  assert.match(detail,/ขอแก้วลึกกว่านี้/);
+  assert.match(detail,/ดูคนที่ชงแก้วคล้ายกัน/);
+  assert.match(recommendation,/excludeSlugs/);
+  assert.match(recommendation,/preference/);
+  assert.equal((quiz.match(/traits:\{/g)??[]).length,35);
 });
