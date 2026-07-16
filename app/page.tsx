@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { brewQuestions, getTimeContext, promptFor, type BrewAnswer, type BrewOption } from "../lib/brew-quiz";
+import { brewQuestions, getTimeContext, promptFor, type BrewAnswer, type BrewOption, type TimeContext } from "../lib/brew-quiz";
 import "./landing-hook.css";
 
 const moods = ["อยากเริ่มใหม่", "ใจล้าไปหน่อย", "อยากมีวินัย", "กำลังตามหาตัวเอง"];
@@ -32,11 +32,16 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
   const [heroIndex, setHeroIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [brewAnswers, setBrewAnswers] = useState<BrewAnswer[]>([]);
-  const [timeContext] = useState(()=>getTimeContext(new Date().getHours()));
+  const [timeContext,setTimeContext] = useState<TimeContext>("morning");
   const [slideStart, setSlideStart] = useState<number | null>(null);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setHeroIndex((current) => (current + 1) % heroCups.length), 4800);
+    const frame = window.requestAnimationFrame(() => setTimeContext(getTimeContext(new Date().getHours())));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setHeroIndex((current) => (current + 1) % heroCups.length), 8200);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -112,7 +117,13 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
                 <span className="steam">〰<br />〰</span>
                 <span className="falling-mix"><i></i><i></i><i></i></span><span className="cup-body"><span className="hero-fill"></span><span>cup<br /><i>of</i><br />us</span><span className="riso-face">•‿•</span></span>
                 <span className="cup-handle"></span><span className="saucer"></span>
-                <span className="cup-recipe">{cup.mix.map(item=><span key={item}>{item}</span>)}</span>
+                <span className="cup-recipe" aria-label={`สัดส่วนคาแรกเตอร์ของ ${cup.name}`}>
+                  <b>TASTE PROFILE</b>
+                  {cup.mix.map(item=>{
+                    const [percent,...label] = item.split(" ");
+                    return <span className="recipe-meter" key={item} style={{"--bar":percent} as React.CSSProperties}><i><em></em></i><small><strong>{percent}</strong>{label.join(" ")}</small></span>;
+                  })}
+                </span>
               </span>
             </div>;
           })}

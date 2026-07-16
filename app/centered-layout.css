@@ -1,0 +1,43 @@
+/* One shared centering rule: full-bleed color, bounded readable content. */
+:root{--page-max:1540px;--reading-max:900px}
+
+.catalog-hero,.catalog-moods,.catalog-grid{
+  width:min(calc(100% - 64px),var(--page-max));
+  margin-inline:auto;
+}
+.catalog-hero,.catalog-grid{padding-inline:0}
+.catalog-moods{padding-inline:0}
+
+.club-page>header,.club-compose,.club-feed,
+.admin-page>header,.admin-events,.admin-loading{
+  padding-left:max(28px,calc((100vw - 1320px)/2));
+  padding-right:max(28px,calc((100vw - 1320px)/2));
+}
+.admin-page aside{width:min(calc(100% - 56px),1320px);margin-left:auto;margin-right:auto}
+.admin-stats{width:min(calc(100% - 56px),1320px);margin-inline:auto;border:2px solid var(--ink)}
+
+.cup-detail-hero-inner,
+.personality-inner,
+.coffee-menu-inner,
+.reader-story-progress,
+.reader-story-stage,
+.reader-story-controls,
+.profile-page>section,
+.account-flow-card{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.view-brew .journey-section>.brew-intro,
+.view-brew .journey-section>.journey-lab,
+.community-heading,.ugc-grid,.partner-head,.cafe-list,.sample-note{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+@media(max-width:760px){
+  .catalog-hero,.catalog-moods,.catalog-grid{width:min(calc(100% - 32px),var(--page-max))}
+  .club-page>header,.club-compose,.club-feed,
+  .admin-page>header,.admin-events,.admin-loading{padding-left:20px;padding-right:20px}
+  .admin-stats,.admin-page aside{width:calc(100% - 32px)}
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PwaRegister } from "./components/PwaRegister";
 import "./globals.css";
 import "./typography.css";
+import "./centered-layout.css";
 
 export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
