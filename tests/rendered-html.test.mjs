@@ -82,6 +82,9 @@ test("featured books embed playable YouTube summaries and Spotify tracks", async
   assert.match(detail, /podcast discussion/);
   assert.match(detail, /String\(videoIndex\+1\).*videoOptions\.length/);
   assert.match(detail, /open\.spotify\.com\/embed\/track/);
+  assert.match(detail, /playable=mediaOptions\.filter/);
+  assert.match(detail, /setSpotify\(\{embedUrl:/);
+  assert.doesNotMatch(detail, /setSpotify\(null\)/);
 });
 
 test("guest-first accounts use server sessions and migrate saved cups", async () => {
