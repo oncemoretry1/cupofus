@@ -19,8 +19,6 @@ const routeMorph = (pathname: string): Pick<MorphState, "kind" | "label"> => {
   return { kind: "home", label: "กลับไป Cup of Us" };
 };
 
-const symbol: Record<MorphKind, string> = { home: "us", cup: "cup", shelf: "▦", book: "Aa", page: "¶", note: "✦", profile: "●", place: "⌖" };
-
 export function MorphTransition() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [morph, setMorph] = useState<MorphState>({ x: 50, y: 50, width: 160, height: 76, kind: "home", label: "Cup of Us" });
@@ -42,8 +40,8 @@ export function MorphTransition() {
         setMorph((current) => ({ ...current, ...routeMorph(window.location.pathname), x: 50, y: 50 }));
       }
       setPhase("reveal");
-      // Keep the overlay alive until the last staggered wash has fully cleared.
-      window.setTimeout(() => setPhase("idle"), 1140);
+      // Keep the overlay alive until the cup has drained and the last layer clears.
+      window.setTimeout(() => setPhase("idle"), 1080);
     };
 
     const onClick = (event: MouseEvent) => {
@@ -68,7 +66,7 @@ export function MorphTransition() {
       setMorph(state);
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       setPhase("cover");
-      window.setTimeout(() => window.location.assign(next.href), 880);
+      window.setTimeout(() => window.location.assign(next.href), 940);
     };
 
     const onPageShow = (event: PageTransitionEvent) => {
@@ -96,6 +94,15 @@ export function MorphTransition() {
     <i className="morph-wash morph-wash-yellow"></i>
     <i className="morph-wash morph-wash-blue"></i>
     <i className="morph-wash morph-wash-paper"></i>
-    <span className="morph-object"><i>{symbol[morph.kind]}</i><b>{morph.label}</b><small>CUP OF US</small></span>
+    <span className="morph-object">
+      <i className="morph-steam morph-steam-one"></i>
+      <i className="morph-steam morph-steam-two"></i>
+      <i className="morph-handle"></i>
+      <span className="morph-cup-body">
+        <i className="morph-liquid"></i>
+        <span className="morph-cup-mark"><b>cup</b><em>of</em><b>us</b></span>
+      </span>
+      <b className="morph-label">{morph.label}</b>
+    </span>
   </div>;
 }
