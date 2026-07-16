@@ -103,7 +103,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
             </h1>
             <p className="hero-support">ชงหนังสือ เพลง กาแฟ และพื้นที่ที่เข้ากับอารมณ์ของคุณในวันนี้</p>
           </div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>ชงแก้วที่เป็นคุณ</b><span>→</span></a></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>ชงแก้วของตัวเอง</b><span>→</span></a><a className="sample-cup-link" href="#menu">ดูตัวอย่างแก้ว ↓</a></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>

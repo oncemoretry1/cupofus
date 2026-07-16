@@ -121,7 +121,26 @@ test("cup result explains personality and supports contextual refills", async ()
   assert.match(detail,/ขอแก้วเบากว่านี้/);
   assert.match(detail,/ขอแก้วลึกกว่านี้/);
   assert.match(detail,/ดูคนที่ชงแก้วคล้ายกัน/);
+  assert.match(detail,/เปลี่ยนเพลง/);
+  assert.match(detail,/เปลี่ยนกาแฟ\/คาเฟ่/);
+  assert.match(detail,/navigator\.share/);
+  assert.match(detail,/google\.com\/maps\/search/);
+  assert.match(detail,/youtube\.com\/results\?search_query/);
   assert.match(recommendation,/excludeSlugs/);
   assert.match(recommendation,/preference/);
   assert.equal((quiz.match(/traits:\{/g)??[]).length,35);
+});
+
+test("MVP is installable and keeps the brief's clear entry points", async () => {
+  const [page, layout, manifest, worker] = await Promise.all([
+    read("app/page.tsx"),
+    read("app/layout.tsx"),
+    read("app/manifest.ts"),
+    read("public/sw.js"),
+  ]);
+  assert.match(page, /ชงแก้วของตัวเอง/);
+  assert.match(page, /ดูตัวอย่างแก้ว/);
+  assert.match(layout, /PwaRegister/);
+  assert.match(manifest, /display: "standalone"/);
+  assert.match(worker, /url\.pathname\.startsWith\("\/api\/"\)/);
 });
