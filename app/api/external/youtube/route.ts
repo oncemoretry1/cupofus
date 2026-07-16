@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { eq } from "drizzle-orm";
 import { getDb } from "../../../../db";
 import { books } from "../../../../db/schema";
@@ -16,7 +15,7 @@ export async function GET(request: Request) {
   if (!slug) return Response.json({ error:"slug required" }, { status:400 });
   const book = (await getDb().select({ title:books.title, author:books.author }).from(books).where(eq(books.slug,slug)).limit(1))[0];
   if (!book) return Response.json({ videos:[] });
-  const key = (env as unknown as RuntimeEnv).YOUTUBE_API_KEY;
+  const key = (process.env as RuntimeEnv).YOUTUBE_API_KEY;
   if (!key) return Response.json({ videos:[], configured:false });
   try {
     const query = encodeURIComponent(`${book.title} ${book.author} book summary review`);

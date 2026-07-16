@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useEffect, useMemo, useState } from "react";
 
 type Book={id:number;slug:string;title:string;thaiTitle?:string;author:string;coverColor:string;coverTextColor?:string;summary:string;tags:string;concerns:string;readingMinutes:number};

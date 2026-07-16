@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { eq } from "drizzle-orm";
 import { getDb } from "../../../../db";
 import { mediaPairings } from "../../../../db/schema";
@@ -10,7 +9,7 @@ export async function GET(request:Request){
   if(!slug)return Response.json({error:"slug required"},{status:400});
   const pair=(await getDb().select().from(mediaPairings).where(eq(mediaPairings.bookSlug,slug)).limit(1))[0];
   if(!pair)return Response.json({pairing:null});
-  const runtime=env as unknown as RuntimeEnv;
+  const runtime=process.env as RuntimeEnv;
   let spotify:unknown=null;let movie:unknown=null;
   if(runtime.SPOTIFY_CLIENT_ID&&runtime.SPOTIFY_CLIENT_SECRET){try{
     const credentials=btoa(`${runtime.SPOTIFY_CLIENT_ID}:${runtime.SPOTIFY_CLIENT_SECRET}`);

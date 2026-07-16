@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useEffect,useState } from "react";
 import "./club.css";
 type Post={id:number;kind:string;title:string;body:string};

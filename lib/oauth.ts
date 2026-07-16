@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { and, eq } from "drizzle-orm";
 import { getDb } from "../db";
 import { authIdentities, authUsers } from "../db/schema";
@@ -17,10 +16,10 @@ const safeReturnTo = (value:unknown) => { const path=String(value??""); return p
 const cookieValue = (request:Request,name:string) => (request.headers.get("cookie")??"").split(";").map(x=>x.trim()).find(x=>x.startsWith(`${name}=`))?.slice(name.length+1)??"";
 const secure = (request:Request) => new URL(request.url).protocol==="https:"?"; Secure":"";
 export const oauthConfig = () => {
-  const values=env as unknown as Record<string,string|undefined>;
+  const values=process.env as Record<string,string|undefined>;
   return { google:Boolean(values.GOOGLE_OAUTH_CLIENT_ID&&values.GOOGLE_OAUTH_CLIENT_SECRET), apple:Boolean(values.APPLE_CLIENT_ID&&values.APPLE_CLIENT_SECRET) };
 };
-export const providerEnv = () => env as unknown as Record<string,string|undefined>;
+export const providerEnv = () => process.env as Record<string,string|undefined>;
 export function createOAuthContext(request:Request,provider:OAuthProvider) {
   const url=new URL(request.url); const state=b64url(bytes()); const nonce=b64url(bytes());
   const context:OAuthContext={state,nonce,provider,guestId:String(url.searchParams.get("guestId")??"").slice(0,80),returnTo:safeReturnTo(url.searchParams.get("returnTo")),saveIntent:url.searchParams.get("intent")==="save"};

@@ -1,16 +1,14 @@
-import { env } from "cloudflare:workers";
-
 type MailEnv = { RESEND_API_KEY?: string; AUTH_EMAIL_FROM?: string; APP_BASE_URL?: string };
 
 const escapeHtml = (value: string) => value.replace(/[&<>'"]/g, (character) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;" })[character] ?? character);
 
 export function appBaseUrl(request: Request) {
-  const runtime = env as unknown as MailEnv;
+  const runtime = process.env as MailEnv;
   return (runtime.APP_BASE_URL || new URL(request.url).origin).replace(/\/$/, "");
 }
 
 export async function sendAuthEmail(input: { to:string; displayName:string; actionUrl:string; kind:"verify"|"reset" }) {
-  const runtime = env as unknown as MailEnv;
+  const runtime = process.env as MailEnv;
   if (!runtime.RESEND_API_KEY || !runtime.AUTH_EMAIL_FROM) return { sent:false, reason:"email_not_configured" } as const;
   const isVerify = input.kind === "verify";
   const title = isVerify ? "ยืนยันอีเมลของคุณ" : "ตั้งรหัสผ่านใหม่";

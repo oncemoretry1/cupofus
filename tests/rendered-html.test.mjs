@@ -5,7 +5,7 @@ import test from "node:test";
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
 test("landing and brew experience keep the seven-cup contract", async () => {
-  const [page,quiz] = await Promise.all([read("app/page.tsx"),read("lib/brew-quiz.ts")]);
+  const [page,quiz] = await Promise.all([read("app/components/CupExperience.tsx"),read("lib/brew-quiz.ts")]);
   const cups = page.match(/name:\s*"Cup of /g) ?? [];
   const questions = quiz.match(/prompt:samePrompt\(/g) ?? [];
   const options = quiz.match(/\{id:"[^"]+",label:/g) ?? [];
@@ -169,7 +169,7 @@ test("cup result explains personality and supports contextual refills", async ()
 
 test("MVP is installable and keeps the brief's clear entry points", async () => {
   const [page, layout, manifest, worker] = await Promise.all([
-    read("app/page.tsx"),
+    read("app/components/CupExperience.tsx"),
     read("app/layout.tsx"),
     read("app/manifest.ts"),
     read("public/sw.js"),

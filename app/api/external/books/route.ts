@@ -1,2 +1,16 @@
-import { env } from "cloudflare:workers";
-export async function GET(request:Request){const url=new URL(request.url);const title=url.searchParams.get("title")??"";const author=url.searchParams.get("author")??"";if(!title)return Response.json({volume:null},{status:400});const query=`intitle:${title}${author?` inauthor:${author}`:""}`;const key=(env as unknown as {GOOGLE_BOOKS_API_KEY?:string}).GOOGLE_BOOKS_API_KEY;const endpoint=`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&printType=books&maxResults=10${key?`&key=${key}`:""}`;const response=await fetch(endpoint);const fallbackUrl=`https://books.google.com/books?q=${encodeURIComponent(`${title} ${author}`)}`;if(!response.ok)return Response.json({volume:null,fallbackUrl,needsApiKey:response.status===429});const data=await response.json() as {items?:Array<{id:string;volumeInfo?:Record<string,unknown>;accessInfo?:Record<string,unknown>;saleInfo?:Record<string,unknown>}>};const normalized=title.toLowerCase().replace(/[^a-z0-9ก-๙]/g,"");const item=(data.items??[]).find(x=>String(x.volumeInfo?.title??"").toLowerCase().replace(/[^a-z0-9ก-๙]/g,"").includes(normalized))??data.items?.[0];return Response.json({volume:item??null,fallbackUrl,query:{title,author}})}
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const title = url.searchParams.get("title") ?? "";
+  const author = url.searchParams.get("author") ?? "";
+  if (!title) return Response.json({ volume: null }, { status: 400 });
+  const query = `intitle:${title}${author ? ` inauthor:${author}` : ""}`;
+  const key = process.env.GOOGLE_BOOKS_API_KEY;
+  const endpoint = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&printType=books&maxResults=10${key ? `&key=${key}` : ""}`;
+  const response = await fetch(endpoint);
+  const fallbackUrl = `https://books.google.com/books?q=${encodeURIComponent(`${title} ${author}`)}`;
+  if (!response.ok) return Response.json({ volume: null, fallbackUrl, needsApiKey: response.status === 429 });
+  const data = await response.json() as { items?: Array<{ id:string; volumeInfo?:Record<string,unknown>; accessInfo?:Record<string,unknown>; saleInfo?:Record<string,unknown> }> };
+  const normalized = title.toLowerCase().replace(/[^a-z0-9ก-๙]/g, "");
+  const item = (data.items ?? []).find((entry) => String(entry.volumeInfo?.title ?? "").toLowerCase().replace(/[^a-z0-9ก-๙]/g, "").includes(normalized)) ?? data.items?.[0];
+  return Response.json({ volume: item ?? null, fallbackUrl, query: { title, author } });
+}

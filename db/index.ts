@@ -1,13 +1,14 @@
-import { env } from "cloudflare:workers";
-import { drizzle } from "drizzle-orm/d1";
+import { getConnectionString } from "@netlify/database";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-export function getDb() {
-  if (!env.DB) {
-    throw new Error(
-      "Cloudflare D1 binding `DB` is unavailable. Set the `d1` field in .openai/hosting.json to `DB` or let your control plane inject the real binding values before using the database."
-    );
-  }
+let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
-  return drizzle(env.DB, { schema });
+export function getDb() {
+  if (!database) {
+    const connectionString = process.env.NETLIFY_DB_URL || getConnectionString();
+    database = drizzle(neon(connectionString), { schema });
+  }
+  return database;
 }

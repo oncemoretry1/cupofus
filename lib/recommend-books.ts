@@ -1,4 +1,4 @@
-import { findBrewOption, type BrewAnswer, type TimeContext } from "./brew-quiz.ts";
+import { findBrewOption, type BrewAnswer, type TimeContext } from "./brew-quiz";
 
 export type RecommendationBook = { slug:string; tags:string; concerns:string; personality:string; summary:string; [key:string]:unknown };
 

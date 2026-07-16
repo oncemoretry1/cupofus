@@ -1,6 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
-import { brewQuestions, type BrewAnswer, type TimeContext } from "../lib/brew-quiz.ts";
-import { rankBooks, type RecommendationBook } from "../lib/recommend-books.ts";
+import { brewQuestions, type BrewAnswer, type TimeContext } from "../lib/brew-quiz";
+import { rankBooks, type RecommendationBook } from "../lib/recommend-books";
 
 const databasePath = process.argv[2];
 if (!databasePath) throw new Error("Pass the local D1 sqlite path");
