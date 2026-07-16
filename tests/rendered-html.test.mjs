@@ -74,3 +74,27 @@ test("featured books embed playable YouTube summaries and Spotify tracks", async
   assert.match(detail, /String\(videoIndex\+1\).*05/);
   assert.match(detail, /open\.spotify\.com\/embed\/track/);
 });
+
+test("guest-first accounts use server sessions and migrate saved cups", async () => {
+  const [migration, auth, signup, login, profile, savedCups] = await Promise.all([
+    read("drizzle/0005_user_auth.sql"),
+    read("lib/auth.ts"),
+    read("app/api/auth/signup/route.ts"),
+    read("app/api/auth/login/route.ts"),
+    read("app/profile/page.tsx"),
+    read("app/api/saved-cups/route.ts"),
+  ]);
+
+  assert.match(migration, /CREATE TABLE `auth_users`/);
+  assert.match(migration, /CREATE TABLE `auth_sessions`/);
+  assert.match(auth, /PBKDF2/);
+  assert.match(auth, /210_000/);
+  assert.match(auth, /HttpOnly; SameSite=Lax/);
+  assert.match(auth, /migrateGuestData/);
+  assert.match(auth, /update\(savedCups\)/);
+  assert.match(signup, /hashPassword/);
+  assert.match(login, /verifyPassword/);
+  assert.match(profile, /\/api\/auth\/\$\{authMode\}/);
+  assert.match(profile, /OPTIONAL MEMBER ACCOUNT/);
+  assert.match(savedCups, /getCurrentUser/);
+});
