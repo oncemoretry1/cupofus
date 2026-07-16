@@ -69,11 +69,11 @@ export function ProgressiveReader({ title, eyebrow, steps, actions }: Progressiv
         </section>
         <footer className="reader-story-controls">
           <button onClick={() => goTo(currentStep - 1)} disabled={isFirst} aria-label="ย้อนกลับไปสถานีก่อนหน้า">
-            <span>←</span><small>สถานีก่อนหน้า</small>
+            <span>←</span><b>ย้อนกลับ<small>{isFirst ? "ต้นทาง" : steps[currentStep - 1].label}</small></b>
           </button>
-          <p>{currentStep + 1} / {steps.length}</p>
+          <p><b>{String(currentStep + 1).padStart(2,"0")}</b><span>/</span>{String(steps.length).padStart(2,"0")}</p>
           <button className="reader-forward" onClick={() => goTo(currentStep + 1)} disabled={isLast} aria-label="ไปสถานีถัดไป">
-            <small>{isLast ? "ถึงปลายทางแล้ว" : "สถานีถัดไป"}</small><span>→</span>
+            <b>{isLast ? "อ่านครบแล้ว" : "อ่านต่อ"}<small>{isLast ? "ถึงปลายทาง" : steps[currentStep + 1].label}</small></b><span>→</span>
           </button>
         </footer>
       </article>

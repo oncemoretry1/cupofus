@@ -76,7 +76,7 @@ export default function DynamicReadPage() {
     {
       id: "opening",
       label: "ขึ้นขบวน",
-      content: <><span className="chapter-no">01</span><p className="eyebrow">{book.author} · CUP OF US LONG READ</p><h1>{book.title}<br/><em>{book.thaiTitle}</em></h1><p className="reader-deck">{flight.opening}</p><div className="reader-meta"><span>อ่าน 10–15 นาที</span><span>{flight.tags.join(" · ")}</span><span>เรียบเรียงใหม่โดย Cup of Us</span></div><div className="story-copy"><h2>หนังสือเล่มนี้กำลังชวนเราไปไหน</h2><p>{flight.context}</p><p>{book.summary} แต่แทนที่จะรีบเปลี่ยนตัวเอง หน้านี้จะพาอ่านทีละสถานี เพื่อเห็นทั้งสิ่งที่แนวคิดนี้ให้เราและขอบเขตที่ควรระวัง</p></div></>,
+      content: <><span className="chapter-no">01</span><p className="eyebrow">{book.author} · CUP OF US LONG READ</p><h1 className="reader-book-title"><span>{book.title}</span>{book.thaiTitle&&<em>{book.thaiTitle}</em>}</h1><p className="reader-deck">{flight.opening}</p><div className="reader-meta"><span>อ่าน 10–15 นาที</span><span>{flight.tags.join(" · ")}</span><span>เรียบเรียงใหม่โดย Cup of Us</span></div><div className="story-copy"><h2>หนังสือเล่มนี้กำลังชวนเราไปไหน</h2><p>{flight.context}</p><p>{book.summary} แต่แทนที่จะรีบเปลี่ยนตัวเอง หน้านี้จะพาอ่านทีละสถานี เพื่อเห็นทั้งสิ่งที่แนวคิดนี้ให้เราและขอบเขตที่ควรระวัง</p></div></>,
     },
     {
       id: "core",
