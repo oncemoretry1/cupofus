@@ -22,6 +22,9 @@ export default function ProfilePage() {
   const [authMessage, setAuthMessage] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [devActionUrl, setDevActionUrl] = useState("");
+  const [saveIntent, setSaveIntent] = useState(false);
+  const [providers, setProviders] = useState({ google:false, apple:false });
+  const [providerUrls, setProviderUrls] = useState({ google:"", apple:"" });
 
   const load = async (id: string) => {
     const [profile, cupData] = await Promise.all([
@@ -35,15 +38,37 @@ export default function ProfilePage() {
     setLoading(false);
   };
 
+  const completePendingSave = async (id: string) => {
+    const raw = localStorage.getItem("cup-of-us-pending-save");
+    if (!raw) return false;
+    const pending = JSON.parse(raw);
+    const response = await fetch("/api/saved-cups", { method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({ ...pending, guestId:id }) });
+    if (response.ok) localStorage.removeItem("cup-of-us-pending-save");
+    return response.ok;
+  };
+
+  const returnToCup = () => {
+    const destination = new URLSearchParams(window.location.search).get("returnTo");
+    window.location.assign(destination?.startsWith("/") ? destination : "/profile");
+  };
+
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const wantsToSave = params.get("intent") === "save";
+    const oauth=params.get("oauth");
     let id = localStorage.getItem("cup-of-us-guest");
     if (!id) {
       id = `guest-${crypto.randomUUID()}`;
       localStorage.setItem("cup-of-us-guest", id);
     }
     guestId.current = id;
+    const returnTo=params.get("returnTo")??"/profile";
+    const makeProviderUrl=(provider:"google"|"apple")=>{const query=new URLSearchParams({guestId:id,returnTo});if(wantsToSave)query.set("intent","save");return `/api/auth/oauth/${provider}/start?${query.toString()}`};
+    queueMicrotask(()=>{setSaveIntent(wantsToSave);setProviderUrls({google:makeProviderUrl("google"),apple:makeProviderUrl("apple")});if(oauth==="success")setAuthMessage("เข้าสู่ระบบแล้ว และเก็บแก้วให้เรียบร้อย ✓");else if(oauth?.endsWith("_not_configured"))setAuthMessage("ช่องทางนี้กำลังรอเชื่อมบัญชีนักพัฒนา กรุณาใช้อีเมลไปก่อนนะ");else if(oauth)setAuthMessage("ยังเชื่อมบัญชีภายนอกไม่ได้ กรุณาลองใหม่หรือใช้อีเมล")});
+    fetch("/api/auth/providers").then(response=>response.json()).then(data=>setProviders({google:Boolean(data.google),apple:Boolean(data.apple)})).catch(()=>{});
     fetch("/api/auth/session").then((response) => response.json()).then((data) => {
       setUser(data.user ?? null);
+      if (data.user && wantsToSave) return completePendingSave(id).then(returnToCup);
       return load(id);
     }).catch(() => load(id));
   }, []);
@@ -80,6 +105,11 @@ export default function ProfilePage() {
       setPassword("");
       setDevActionUrl(data.verificationUrl ?? "");
       setAuthMessage(authMode === "signup" ? (data.emailSent ? "สร้างบัญชีแล้ว เช็กอีเมลเพื่อยืนยันบัญชีได้เลย ✓" : "สร้างบัญชีแล้ว ระบบอีเมลยังไม่ได้เชื่อม แต่คุณใช้งานต่อได้") : "เข้าสู่ระบบแล้ว ✓");
+      if (saveIntent) {
+        await completePendingSave(guestId.current);
+        returnToCup();
+        return;
+      }
       await load(guestId.current);
     } catch {
       setAuthMessage("เชื่อมต่อระบบบัญชีไม่ได้ ลองใหม่อีกครั้งนะ");
@@ -107,13 +137,15 @@ export default function ProfilePage() {
     await load(guestId.current);
   };
 
+  const providerHref=(provider:"google"|"apple")=>providerUrls[provider];
+
   return <main className="profile-page">
     <Link className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></Link>
     <section>
       <div className="account-panel">
         {user ? <><div className="signed-in-account"><span className="account-cup" aria-hidden="true"><i></i></span><div><p className="eyebrow">CUP OF US MEMBER</p><strong>{user.displayName}</strong><small>{user.email} · {user.emailVerifiedAt?"ยืนยันอีเมลแล้ว":"รอยืนยันอีเมล"}</small></div><button onClick={logout} type="button">ออกจากระบบ</button></div>{!user.emailVerifiedAt&&<div className="verify-reminder"><div><b>ยืนยันอีเมลเพื่อรักษาแก้วของคุณไว้</b><span>ลิงก์มีอายุ 24 ชั่วโมง และใช้ได้ครั้งเดียว</span></div><button disabled={authBusy} onClick={resendVerification} type="button">ส่งลิงก์อีกครั้ง</button>{authMessage&&<p role="status">{authMessage}</p>}{devActionUrl&&<a href={devActionUrl}>เปิดลิงก์ทดสอบ →</a>}</div>}</> : <div className="auth-account">
-          <div className="auth-account-copy"><p className="eyebrow">OPTIONAL MEMBER ACCOUNT</p><h2>เก็บแก้วไว้<br/>ไม่ว่าจะเปิดจากที่ไหน</h2><p>ใช้ต่อแบบ Guest ได้เสมอ หรือเข้าสู่ระบบเพื่อย้ายแก้วและประวัติจากเครื่องนี้เข้าบัญชี</p></div>
-          <div className="auth-form-wrap"><div className="auth-tabs"><button className={authMode==="login"?"active":""} onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">เข้าสู่ระบบ</button><button className={authMode==="signup"?"active":""} onClick={()=>{setAuthMode("signup");setAuthMessage("")}} type="button">สมัครสมาชิก</button></div><form onSubmit={authenticate}>{authMode==="signup"&&<label>ชื่อที่อยากให้เรียก<input value={authName} onChange={(event)=>setAuthName(event.target.value)} autoComplete="name" required maxLength={60}/></label>}<label>อีเมล<input value={email} onChange={(event)=>setEmail(event.target.value)} type="email" autoComplete="email" required/></label>{authMode!=="forgot"&&<label>รหัสผ่าน<input value={password} onChange={(event)=>setPassword(event.target.value)} type="password" autoComplete={authMode==="login"?"current-password":"new-password"} minLength={8} required/></label>}{authMode==="signup"&&<small>อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</small>}<button className="auth-submit" disabled={authBusy} type="submit">{authBusy?"กำลังชงบัญชี...":authMode==="login"?"เข้าสู่ระบบ →":authMode==="signup"?"สร้างบัญชี →":"ส่งลิงก์ตั้งรหัสผ่าน →"}</button>{authMode==="login"&&<button className="forgot-link" onClick={()=>{setAuthMode("forgot");setAuthMessage("")}} type="button">ลืมรหัสผ่าน?</button>}{authMode==="forgot"&&<button className="forgot-link" onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">← กลับไปเข้าสู่ระบบ</button>}{authMessage&&<p className="auth-message" role="status">{authMessage}</p>}{devActionUrl&&<a className="dev-auth-link" href={devActionUrl}>เปิดลิงก์ทดสอบ →</a>}</form></div>
+          <div className="auth-account-copy"><p className="eyebrow">{saveIntent?"SAVE THIS CUP":"OPTIONAL MEMBER ACCOUNT"}</p><h2>{saveIntent?<>เก็บแก้วนี้ไว้<br/>ในบัญชีของคุณ</>:<>เก็บแก้วไว้<br/>ไม่ว่าจะเปิดจากที่ไหน</>}</h2><p>{saveIntent?"สมัครหรือเข้าสู่ระบบครั้งนี้ แล้วเราจะพาคุณกลับไปยังแก้วเดิมทันที":"ชงแก้ว อ่าน ฟัง และสำรวจได้โดยไม่ต้องล็อกอิน สมัครเฉพาะเมื่ออยากเก็บแก้วข้ามอุปกรณ์"}</p></div>
+          <div className="auth-form-wrap"><div className="auth-tabs"><button className={authMode==="login"?"active":""} onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">เข้าสู่ระบบ</button><button className={authMode==="signup"?"active":""} onClick={()=>{setAuthMode("signup");setAuthMessage("")}} type="button">สมัครสมาชิก</button></div><div className="oauth-providers"><a className={!providers.google?"is-disabled":""} href={providers.google?providerHref("google"):undefined} aria-disabled={!providers.google}><span className="google-mark" aria-hidden="true">G</span><b>ดำเนินการต่อด้วย Google</b></a><a className={!providers.apple?"is-disabled":""} href={providers.apple?providerHref("apple"):undefined} aria-disabled={!providers.apple}><span className="apple-mark" aria-hidden="true">●</span><b>ดำเนินการต่อด้วย Apple</b></a></div>{(!providers.google||!providers.apple)&&<p className="oauth-setup-note">ช่องทางสีจางจะเปิดใช้ทันทีเมื่อเชื่อม OAuth credentials ของผู้ให้บริการ</p>}<div className="oauth-divider"><span>หรือใช้อีเมล</span></div><form onSubmit={authenticate}>{authMode==="signup"&&<label>ชื่อที่อยากให้เรียก<input value={authName} onChange={(event)=>setAuthName(event.target.value)} autoComplete="name" required maxLength={60}/></label>}<label>อีเมล<input value={email} onChange={(event)=>setEmail(event.target.value)} type="email" autoComplete="email" required/></label>{authMode!=="forgot"&&<label>รหัสผ่าน<input value={password} onChange={(event)=>setPassword(event.target.value)} type="password" autoComplete={authMode==="login"?"current-password":"new-password"} minLength={8} required/></label>}{authMode==="signup"&&<small>อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</small>}<button className="auth-submit" disabled={authBusy} type="submit">{authBusy?"กำลังชงบัญชี...":authMode==="login"?"เข้าสู่ระบบ →":authMode==="signup"?"สร้างบัญชี →":"ส่งลิงก์ตั้งรหัสผ่าน →"}</button>{authMode==="login"&&<button className="forgot-link" onClick={()=>{setAuthMode("forgot");setAuthMessage("")}} type="button">ลืมรหัสผ่าน?</button>}{authMode==="forgot"&&<button className="forgot-link" onClick={()=>{setAuthMode("login");setAuthMessage("")}} type="button">← กลับไปเข้าสู่ระบบ</button>}{authMessage&&<p className="auth-message" role="status">{authMessage}</p>}{devActionUrl&&<a className="dev-auth-link" href={devActionUrl}>เปิดลิงก์ทดสอบ →</a>}</form></div>
         </div>}
       </div>
 

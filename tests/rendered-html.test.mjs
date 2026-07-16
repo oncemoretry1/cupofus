@@ -75,7 +75,7 @@ test("featured books embed playable YouTube summaries and Spotify tracks", async
   assert.match(detail, /youtube-nocookie\.com\/embed/);
   assert.match(detail, /visual animated summary/);
   assert.match(detail, /podcast discussion/);
-  assert.match(detail, /String\(videoIndex\+1\).*05/);
+  assert.match(detail, /String\(videoIndex\+1\).*videoOptions\.length/);
   assert.match(detail, /open\.spotify\.com\/embed\/track/);
 });
 
@@ -108,6 +108,32 @@ test("guest-first accounts use server sessions and migrate saved cups", async ()
   assert.match(profile, /resend-verification/);
   assert.match(savedCups, /getCurrentUser/);
   assert.match(mail, /api\.resend\.com\/emails/);
+  assert.match(profile, /cup-of-us-pending-save/);
+  assert.match(profile, /params\.get\("intent"\) === "save"/);
+  assert.match(profile, /ดำเนินการต่อด้วย Google/);
+  assert.match(profile, /ดำเนินการต่อด้วย Apple/);
+});
+
+test("social login uses provider state, verified identity and server session", async () => {
+  const [migration,oauth,googleStart,googleCallback,appleCallback,providers]=await Promise.all([
+    read("drizzle/0007_social_login.sql"),read("lib/oauth.ts"),read("app/api/auth/oauth/google/start/route.ts"),read("app/api/auth/oauth/google/callback/route.ts"),read("app/api/auth/oauth/apple/callback/route.ts"),read("app/api/auth/providers/route.ts")
+  ]);
+  assert.match(migration,/CREATE TABLE `auth_identities`/);
+  assert.match(oauth,/HttpOnly; SameSite=Lax/);
+  assert.match(oauth,/verifyAppleIdToken/);
+  assert.match(oauth,/crypto\.subtle\.verify/);
+  assert.match(googleStart,/accounts\.google\.com/);
+  assert.match(googleCallback,/openidconnect\.googleapis\.com/);
+  assert.match(appleCallback,/appleid\.apple\.com\/auth\/token/);
+  assert.match(providers,/oauthConfig/);
+});
+
+test("YouTube results only embed verified video ids and keep a book-specific fallback", async()=>{
+  const [detail,youtube]=await Promise.all([read("app/cup/[slug]/page.tsx"),read("app/api/external/youtube/route.ts")]);
+  assert.match(youtube,/videoEmbeddable/);
+  assert.match(youtube,/videoSyndicated/);
+  assert.doesNotMatch(detail,/listType=search/);
+  assert.match(detail,/youtube-search-card/);
 });
 
 test("cup result explains personality and supports contextual refills", async () => {
@@ -124,6 +150,8 @@ test("cup result explains personality and supports contextual refills", async ()
   assert.match(detail,/เปลี่ยนเพลง/);
   assert.match(detail,/เปลี่ยนกาแฟ\/คาเฟ่/);
   assert.match(detail,/navigator\.share/);
+  assert.match(detail,/save_requires_account/);
+  assert.match(detail,/cup-of-us-pending-save/);
   assert.match(detail,/google\.com\/maps\/search/);
   assert.match(detail,/youtube\.com\/results\?search_query/);
   assert.match(recommendation,/excludeSlugs/);

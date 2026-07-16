@@ -18,3 +18,54 @@ h1,h2,h3,h4,p{
 [lang="th"],.thai-lead{
   font-kerning:normal;
 }
+
+/* Readability layer: preserve the riso character while keeping every route easy to scan. */
+html{font-size:16px}
+body{font-size:16px;line-height:1.7}
+p,li{font-size:clamp(14px,1.05vw,17px);line-height:1.75}
+.eyebrow{font-size:11px;line-height:1.55;letter-spacing:1.6px}
+.nav-links,.catalog-nav>div{font-size:12px}
+.main-cta,.sample-cup-link,.cup-count{font-size:13px}
+.view-landing .main-cta b:after{font-size:14px}
+.hero-question{font-size:13px;line-height:1.5}
+.hero-support{font-size:16px;line-height:1.7}
+.section-head>p,.partner-head>p,.community-heading>p{font-size:14px;line-height:1.75;max-width:36rem}
+.mood-bar>p,.mood-bar button{font-size:13px}
+.taste,.catalog-copy>p,.catalog-number,.generated-cover small,.generated-cover i,.detail-cover small,.detail-cover i{font-size:10px;line-height:1.45}
+.thai-title,.catalog-copy>span,.book-cup>a,.catalog-copy footer{font-size:13px;line-height:1.65}
+.ingredients p,.events p,.events span,.note small,.join-section p,footer small{font-size:12px;line-height:1.6}
+.single-question>span,.journey-progress,.question-hint,.added-ingredients span{font-size:11px}
+.single-question button{font-size:14px;line-height:1.55;min-height:52px}
+.brew-question>span,.brew-doodle,.disclosure,.ugc-label,.cafe-list article>div:nth-child(2)>span,.sample-note{font-size:11px;line-height:1.5}
+.brew-question button,.brew-button,.result-actions a,.result-actions button,.creator-strip a,.create-post,.store-grid span,.creator-strip p,.cafe-list p,.menu-pills b,.cafe-links a{font-size:13px;line-height:1.55;min-height:42px}
+.coffee-recipe-grid span,.personality-profile small,.result-cafe-card span,.audio-track-copy>span,.audio-time,.audio-duration small,.youtube-summary span{font-size:10px;line-height:1.5}
+.coffee-recipe-grid b,.personality-profile b,.result-cafe-card b,.youtube-summary small{font-size:13px;line-height:1.65}
+.result-cafe-card a,.refill-controls button,.refill-controls>span,.detail-tags span,.detail-jump a,.detail-jump button,.experience button,.read-panel>a,.listen-panel>a,.watch-panel>a,.video-carousel-tabs button{font-size:12px;line-height:1.45;min-height:44px}
+.profile-page p,.auth-account-copy>p:last-child{font-size:15px;line-height:1.75}
+.profile-stats span,.saved-cup-list span,.auth-tabs button,.auth-form-wrap label,.auth-form-wrap form>small,.auth-submit,.auth-message,.signed-in-account small,.signed-in-account button,.forgot-link,.dev-auth-link,.verify-reminder span,.verify-reminder button,.verify-reminder p,.verify-reminder a{font-size:12px;line-height:1.55}
+
+.book-cup,.catalog-card,.personality-profile,.result-cafe-card,.audio-summary-player,.youtube-summary,.auth-account,.profile-page>section,.ugc-card,.cafe-list article,.note{
+  border-radius:14px;
+}
+.catalog-card,.book-cup,.ugc-card,.cafe-list article,.profile-page>section{
+  background-color:var(--cream,#fffdf5);
+}
+.catalog-card,.book-cup{padding:clamp(20px,2.2vw,30px);gap:clamp(18px,2vw,28px)}
+.experience-inner,.cup-detail-copy,.coffee-menu-copy{max-width:68ch}
+.reader-top>a:last-child,.reader-directory>p,.reader-directory nav span,.directory-actions a,.directory-actions button,.reader-meta span,.chapter-no,.book-infographic figcaption span,.infographic-flow article i,.infographic-flow article span,.infographic-aftertaste>span,.reader-story-progress,.reader-story-controls>p{font-size:11px;line-height:1.5}
+.reader-directory nav a,.reader-story-page .reader-directory nav button,.reader-story-controls>button,.official-preview a,.practice-box small,.book-infographic figcaption small{font-size:13px;line-height:1.55}
+.reader-content li p,.official-preview p{font-size:15px;line-height:1.75}
+.idea-card,.practice-box,.book-infographic,.reader-content li,.official-preview{border-radius:14px;overflow:hidden}
+
+@media(max-width:650px){
+  body{font-size:16px}
+  p,li{font-size:15px}
+  .hero-question{font-size:12px}
+  .hero-support{font-size:15px}
+  .main-cta,.sample-cup-link{font-size:13px}
+  .catalog-copy>span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:13px}
+  .catalog-copy footer{font-size:12px}
+  .result-cafe-card a,.refill-controls button{width:100%;font-size:13px;padding:12px 14px}
+  .profile-page>section{padding:26px 20px}
+  button,a,input,textarea,select{line-height:1.5}
+}
