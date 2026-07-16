@@ -41,3 +41,59 @@
   .admin-page>header,.admin-events,.admin-loading{padding-left:20px;padding-right:20px}
   .admin-stats,.admin-page aside{width:calc(100% - 32px)}
 }
+
+/* Shared riso-card language: centered copy with a visible paper layer. */
+.catalog-card,.personality-profile,.result-cafe-card,.youtube-summary,
+.audio-summary-player,.movie-pairing-card,.cart-card,.store-icons>a,
+.store-unavailable,.club-feed article,.ugc-card,.cafe-list article,
+.profile-page>section,.account-flow-card,.admin-stats article,
+.coffee-recipe-grid>div,.book-infographic,.idea-card,.practice-box{
+  text-align:center;
+  transform:translateY(0);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,filter .28s ease;
+}
+.catalog-copy,.catalog-coffee,.youtube-summary>div,.audio-track-copy,
+.result-cafe-card>div,.buy-heading,.coffee-menu-copy,.experience-inner{
+  text-align:center;
+}
+.catalog-copy footer,.media-buttons,.detail-tags,.detail-jump,
+.profile-actions,.recipe-actions,.refill-controls{
+  justify-content:center;
+}
+.catalog-coffee,.audio-summary-player,.personality-snapshot{
+  justify-items:center;
+}
+.catalog-copy>span,.youtube-summary small,.movie-pairing-card i,
+.result-cafe-card b,.cart-card small{
+  text-wrap:pretty;
+}
+
+@media(hover:hover) and (pointer:fine){
+  .catalog-card:hover,.personality-profile:hover,.result-cafe-card:hover,
+  .youtube-summary:hover,.audio-summary-player:hover,.movie-pairing-card:hover,
+  .cart-card:hover,.store-icons>a:hover,.store-unavailable:hover,
+  .club-feed article:hover,.ugc-card:hover,.cafe-list article:hover,
+  .profile-page>section:hover,.account-flow-card:hover,.admin-stats article:hover,
+  .coffee-recipe-grid>div:hover,.book-infographic:hover,.idea-card:hover,
+  .practice-box:hover{
+    transform:translateY(-7px) rotate(-.2deg);
+    box-shadow:11px 13px 0 var(--ink);
+    filter:saturate(1.05);
+    position:relative;
+    z-index:3;
+  }
+  .catalog-card:nth-child(even):hover,.club-feed article:nth-child(even):hover,
+  .coffee-recipe-grid>div:nth-child(even):hover{
+    transform:translateY(-7px) rotate(.2deg);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .catalog-card,.personality-profile,.result-cafe-card,.youtube-summary,
+  .audio-summary-player,.movie-pairing-card,.cart-card,.store-icons>a,
+  .store-unavailable,.club-feed article,.ugc-card,.cafe-list article,
+  .profile-page>section,.account-flow-card,.admin-stats article,
+  .coffee-recipe-grid>div,.book-infographic,.idea-card,.practice-box{
+    transition:none;
+  }
+}
