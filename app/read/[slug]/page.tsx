@@ -41,15 +41,19 @@ export default function DynamicReadPage() {
   useEffect(() => {
     fetch(`/api/books?slug=${slug}`)
       .then((response) => response.json())
-      .then(async (data) => {
+      .then((data) => {
         setBook(data.book);
         if (!data.book) return;
-        const result = await fetch(
+        fetch(
           `/api/external/books?title=${encodeURIComponent(data.book.title)}&author=${encodeURIComponent(data.book.author)}`,
-        ).then((response) => response.json()).catch(() => ({}));
-        setVolume(result.volume ?? null);
-        setPreviewFallback(result.fallbackUrl ?? "");
-      });
+        ).then((response) => response.json()).then((result) => {
+          setVolume(result.volume ?? null);
+          setPreviewFallback(result.fallbackUrl ?? "");
+        }).catch(() => {
+          setVolume(null);
+          setPreviewFallback(`https://books.google.com/books?q=${encodeURIComponent(`${data.book.title} ${data.book.author}`)}`);
+        });
+      }).catch(() => setBook(null));
   }, [slug]);
 
   if (!book) return <main className="cup-loading">กำลังเปิดบทอ่าน...</main>;
