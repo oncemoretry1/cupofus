@@ -53,7 +53,9 @@ test("each detail page exposes read, listen, watch and book-specific buying", as
   assert.match(detail, /id="listen"/);
   assert.match(detail, /id="watch"/);
   assert.match(detail, /id="buy"/);
-  assert.match(detail, /encodeURIComponent\(`\$\{book\.title\} \$\{book\.author\}`\)/);
+  assert.match(detail, /encodeURIComponent\(`\$\{book\.title\} \$\{book\.author\} \$\{phrase\}`\)/);
+  assert.match(detail, /const isDirect=/);
+  assert.match(detail, /\/product\/detail\/508699/);
   assert.match(reader, /reader-directory/);
   assert.match(reader, /ค้นหา \{book\.title\} บน Google Books/);
   assert.match(externalBooks, /fallbackUrl/);
@@ -67,5 +69,8 @@ test("featured books embed playable YouTube summaries and Spotify tracks", async
   assert.equal(youtubeIds.length, 8);
   assert.equal(spotifyIds.length, 8);
   assert.match(detail, /youtube-nocookie\.com\/embed/);
+  assert.match(detail, /visual animated summary/);
+  assert.match(detail, /podcast discussion/);
+  assert.match(detail, /String\(videoIndex\+1\).*05/);
   assert.match(detail, /open\.spotify\.com\/embed\/track/);
 });

@@ -58,6 +58,13 @@ export function AudioSummaryPlayer({ title, text }: { title: string; text: strin
     playFromStart();
   };
 
+  const stop = () => {
+    window.speechSynthesis.cancel();
+    clearTimer();
+    setElapsed(0);
+    setState("idle");
+  };
+
   useEffect(() => () => {
     clearTimer();
     window.speechSynthesis.cancel();
@@ -65,7 +72,7 @@ export function AudioSummaryPlayer({ title, text }: { title: string; text: strin
 
   const progress = Math.min(100, (elapsed / duration) * 100);
   return (
-    <div className={`audio-summary-player ${state === "playing" ? "is-playing" : ""}`}>
+    <div className={`audio-summary-player ${state === "playing" ? "is-playing" : ""} ${state === "playing" || state === "paused" ? "is-docked" : ""}`}>
       <button className="audio-toggle" type="button" onClick={toggle} aria-label={state === "playing" ? "พักเสียง" : "เล่นเสียง"}>
         {state === "playing" ? "Ⅱ" : "▶"}
       </button>
@@ -78,6 +85,7 @@ export function AudioSummaryPlayer({ title, text }: { title: string; text: strin
         <div className="audio-time"><time>{formatTime(elapsed)}</time><time>-{formatTime(Math.max(0, duration - elapsed))}</time></div>
       </div>
       <div className="audio-duration"><b>{formatTime(duration)}</b><small>ความยาวโดยประมาณ</small></div>
+      {(state === "playing" || state === "paused") && <button className="audio-close" type="button" onClick={stop} aria-label="ปิดแถบเสียง">×</button>}
     </div>
   );
 }
