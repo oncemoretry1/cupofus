@@ -3,13 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 
 type Phase = "idle" | "cover" | "reveal";
-type Point = { x: number; y: number };
+type MorphKind = "home" | "cup" | "shelf" | "book" | "page" | "note" | "profile" | "place";
+type MorphState = { x: number; y: number; width: number; height: number; kind: MorphKind; label: string };
 
-const STORAGE_KEY = "cup-of-us-morph-origin";
+const STORAGE_KEY = "cup-of-us-morph-route";
+
+const routeMorph = (pathname: string): Pick<MorphState, "kind" | "label"> => {
+  if (pathname.startsWith("/read/")) return { kind: "page", label: "เปิดบทอ่าน" };
+  if (pathname.startsWith("/cup/")) return { kind: "book", label: "เปิดแก้วหนังสือ" };
+  if (pathname === "/brew") return { kind: "cup", label: "เริ่มชงแก้ว" };
+  if (pathname === "/discover") return { kind: "shelf", label: "เปิดตู้หนังสือ" };
+  if (pathname === "/club") return { kind: "note", label: "ไปที่ Cup Club" };
+  if (pathname === "/profile") return { kind: "profile", label: "เปิดแก้วของฉัน" };
+  if (pathname === "/partners") return { kind: "place", label: "หาร้านที่เข้ากัน" };
+  return { kind: "home", label: "กลับไป Cup of Us" };
+};
+
+const symbol: Record<MorphKind, string> = { home: "us", cup: "cup", shelf: "▦", book: "Aa", page: "¶", note: "✦", profile: "●", place: "⌖" };
 
 export function MorphTransition() {
   const [phase, setPhase] = useState<Phase>("idle");
-  const [point, setPoint] = useState<Point>({ x: 50, y: 50 });
+  const [morph, setMorph] = useState<MorphState>({ x: 50, y: 50, width: 160, height: 76, kind: "home", label: "Cup of Us" });
   const navigating = useRef(false);
 
   useEffect(() => {
@@ -18,35 +32,43 @@ export function MorphTransition() {
       if (reduceMotion.matches) return;
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
-        try { setPoint(JSON.parse(saved) as Point); } catch { setPoint({ x: 50, y: 50 }); }
+        try {
+          setMorph(JSON.parse(saved) as MorphState);
+        } catch {
+          setMorph((current) => ({ ...current, ...routeMorph(window.location.pathname), x: 50, y: 50 }));
+        }
         sessionStorage.removeItem(STORAGE_KEY);
       } else {
-        setPoint({ x: 50, y: 50 });
+        setMorph((current) => ({ ...current, ...routeMorph(window.location.pathname), x: 50, y: 50 }));
       }
       setPhase("reveal");
-      window.setTimeout(() => setPhase("idle"), 920);
+      // Keep the overlay alive until the last staggered wash has fully cleared.
+      window.setTimeout(() => setPhase("idle"), 1140);
     };
 
     const onClick = (event: MouseEvent) => {
       if (reduceMotion.matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || navigating.current) return;
-      const target = event.target as HTMLElement | null;
-      const anchor = target?.closest<HTMLAnchorElement>("a[href]");
+      const anchor = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>("a[href]");
       if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download") || anchor.dataset.noTransition === "true") return;
       const next = new URL(anchor.href, window.location.href);
       if (next.origin !== window.location.origin || !["http:", "https:"].includes(next.protocol)) return;
-      const sameDocument = next.pathname === window.location.pathname && next.search === window.location.search;
-      if (sameDocument && next.hash) return;
+      if (next.pathname === window.location.pathname && next.search === window.location.search && next.hash) return;
 
       event.preventDefault();
       navigating.current = true;
-      const origin = {
-        x: Math.max(0, Math.min(100, event.clientX / window.innerWidth * 100)),
-        y: Math.max(0, Math.min(100, event.clientY / window.innerHeight * 100)),
+      const rect = anchor.getBoundingClientRect();
+      const destination = routeMorph(next.pathname);
+      const state: MorphState = {
+        x: Math.max(0, Math.min(100, (rect.left + rect.width / 2) / window.innerWidth * 100)),
+        y: Math.max(0, Math.min(100, (rect.top + rect.height / 2) / window.innerHeight * 100)),
+        width: Math.max(44, Math.min(rect.width, 360)),
+        height: Math.max(44, Math.min(rect.height, 240)),
+        ...destination,
       };
-      setPoint(origin);
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(origin));
+      setMorph(state);
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       setPhase("cover");
-      window.setTimeout(() => window.location.assign(next.href), 690);
+      window.setTimeout(() => window.location.assign(next.href), 880);
     };
 
     const onPageShow = (event: PageTransitionEvent) => {
@@ -63,10 +85,17 @@ export function MorphTransition() {
     };
   }, []);
 
-  return <div className={`morph-transition morph-${phase}`} style={{ "--morph-x": `${point.x}vw`, "--morph-y": `${point.y}vh` } as React.CSSProperties} aria-hidden="true">
-    <i className="morph-shape morph-shape-yellow"></i>
-    <i className="morph-shape morph-shape-blue"></i>
-    <i className="morph-shape morph-shape-paper"></i>
-    <span className="morph-mark"><b>cup</b><em>of</em><b>us</b><small>กำลังเสิร์ฟหน้าถัดไป</small></span>
+  const style = {
+    "--morph-x": `${morph.x}vw`,
+    "--morph-y": `${morph.y}vh`,
+    "--morph-w": `${morph.width}px`,
+    "--morph-h": `${morph.height}px`,
+  } as React.CSSProperties;
+
+  return <div className={`morph-transition morph-${phase} morph-kind-${morph.kind}`} style={style} aria-hidden="true">
+    <i className="morph-wash morph-wash-yellow"></i>
+    <i className="morph-wash morph-wash-blue"></i>
+    <i className="morph-wash morph-wash-paper"></i>
+    <span className="morph-object"><i>{symbol[morph.kind]}</i><b>{morph.label}</b><small>CUP OF US</small></span>
   </div>;
 }
