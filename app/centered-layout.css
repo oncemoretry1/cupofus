@@ -97,3 +97,18 @@
     transition:none;
   }
 }
+
+/* Site-wide CTA hierarchy: every primary action explains the next outcome. */
+.main-cta,.reveal-book-button,.auth-submit,.club-compose form>button,
+.recipe-actions>a,.recipe-actions>button,.local-signup>button,.join-section form>button{
+  min-height:58px;border:2px solid var(--ink)!important;border-radius:15px!important;
+  box-shadow:5px 6px 0 var(--ink)!important;font-weight:800!important;
+  transition:transform .22s ease,box-shadow .22s ease!important;
+}
+.main-cta:hover,.reveal-book-button:hover,.auth-submit:hover,.club-compose form>button:hover,
+.recipe-actions>a:hover,.recipe-actions>button:hover,.local-signup>button:hover,.join-section form>button:hover{
+  transform:translateY(-4px);box-shadow:8px 10px 0 var(--ink)!important;
+}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:4px solid var(--blue);outline-offset:3px;
+}
