@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { brewQuestions, getTimeContext, promptFor, type BrewAnswer, type BrewOption } from "../lib/brew-quiz";
+import "./landing-hook.css";
 
 const moods = ["อยากเริ่มใหม่", "ใจล้าไปหน่อย", "อยากมีวินัย", "กำลังตามหาตัวเอง"];
 const cups = [
@@ -60,11 +62,6 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
     if (cupCount && brewAnswers.length > 0) cupCount.textContent = `${brewAnswers.length} / 7`;
   }, [questionIndex, brewAnswers]);
 
-  const startBrewing = () => {
-    setBrewState("brewing");
-    window.setTimeout(() => setBrewState("ready"), 3200);
-  };
-
   const answerBrewQuestion = (option: BrewOption) => {
     const answer:BrewAnswer = { questionId:brewQuestions[questionIndex].id, optionId:option.id, label:option.label };
     const nextAnswers = [...brewAnswers, answer];
@@ -82,9 +79,9 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
 
   return (
     <main id="top" className={`cup-view view-${view}`}>
-      {view==="landing"&&<div className="landing-brew-intro" aria-hidden="true"><p>BREWING CUP OF US</p><div className="intro-ingredients"><i></i><i></i><i></i></div><div className="intro-empty-cup"><div></div><b>cup<br/><em>of</em><br/>us</b></div><span>different books for different us</span></div>}
+      {view==="landing"&&<div className="landing-brew-intro" aria-hidden="true"><p>กำลังชงคำแนะนำที่พอดีกับคุณ</p><div className="intro-ingredients"><i></i><i></i><i></i></div><div className="intro-empty-cup"><div></div><b>cup<br/><em>of</em><br/>us</b></div><span>วันนี้ไม่รู้จะอ่านอะไร...ไม่เป็นไร</span></div>}
       <nav className="nav">
-        <a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a>
+        <Link className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></Link>
         <div className="nav-links useful-nav"><a className="nav-search" href="/discover">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="/brew">ชงแก้วของฉัน</a><a href="/club">Cup (Club)</a><a href="/partners">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>
         <a className="cup-count" href="/profile">My Cups <b>{saved}</b></a>
       </nav>
@@ -94,16 +91,18 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
           <div className="hero-variant-copy">
-            <p className="hero-question">วันนี้คุณอยากให้แก้วนี้ช่วยอะไร?</p>
-            <h1>
-              <span>Find a book</span>
-              <span>that feels like</span>
-              <em>your cup of</em>
-              <em className="tea-line">tea.</em>
+            <p className="hero-question">BOOK MATCHMAKER · สำหรับวันที่ไม่รู้จะอ่านอะไร</p>
+            <h1 className="hook-headline">
+              <span>ไม่ต้องรู้ว่า</span>
+              <span>อยากอ่านเล่มไหน</span>
+              <em>แค่รู้ว่าตอนนี้</em>
+              <em className="tea-line">คุณรู้สึกยังไง</em>
             </h1>
-            <p className="hero-support">ชงหนังสือ เพลง กาแฟ และพื้นที่ที่เข้ากับอารมณ์ของคุณในวันนี้</p>
+            <p className="hero-support">ตอบ 7 คำถามสั้น ๆ แล้วเราจะชง <b>แก้ว Personality</b> ที่พาคุณไปเจอหนังสือ กาแฟ เพลง และหนังที่เหมาะกับช่วงเวลานี้</p>
+            <div className="hook-proof" aria-label="ข้อมูลสำคัญ"><span><b>7</b> คำถาม</span><span><b>2</b> นาที</span><span><b>50</b> หนังสือ</span><span>ไม่ต้องล็อกอิน</span></div>
           </div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>ชงแก้วของตัวเอง</b><span>→</span></a><a className="sample-cup-link" href="#menu">ดูตัวอย่างแก้ว ↓</a></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>เริ่มชงแก้วของฉัน</b><span>→</span></a><a className="sample-cup-link" href="#how-it-works">ดูก่อนว่าจะได้อะไร ↓</a></div>
+          <div className="hook-steps" id="how-it-works"><div><i>01</i><span><b>เลือกความรู้สึก</b><small>ตอบตามวันนี้ ไม่มีผิดถูก</small></span></div><div><i>02</i><span><b>เห็นตัวตนในแก้ว</b><small>Personality และจุดเด่นของคุณ</small></span></div><div><i>03</i><span><b>เปิดโลกที่เข้ากัน</b><small>อ่าน · ฟัง · ดู · ซื้อได้ต่อ</small></span></div></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>
@@ -119,7 +118,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
               </span>
             </div>;
           })}
-          <div className="carousel-caption"><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p></div>
+          <div className="carousel-caption"><span>ตัวอย่างผลลัพธ์ของคุณ</span><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p><small>ปัดเพื่อดูอีก 7 บุคลิกของแก้ว</small></div>
           <div className="carousel-pagination" aria-hidden="true">{heroCups.map((cup,index)=><i className={heroIndex===index?"active":""} key={cup.name}></i>)}</div>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
@@ -147,7 +146,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
 
       <section className="menu-section">
         <header className="section-head">
-          <div><span className="section-no">01</span><p className="eyebrow">TODAY'S CUP MENU</p></div>
+          <div><span className="section-no">01</span><p className="eyebrow">TODAY&apos;S CUP MENU</p></div>
           <h2>เลือกจากรสชาติ<br /><em>ที่ใจต้องการ</em></h2>
           <p>เราไม่เชื่อว่ามีหนังสือที่ดีที่สุด<br />มีแต่เล่มที่พอดีกับเราในตอนนี้</p>
         </header>
@@ -173,7 +172,7 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
           <p>THE HOUSE<br />SPECIAL</p>
         </div>
         <div className="recipe-copy">
-          <p className="eyebrow">WHAT'S IN THIS CUP?</p>
+          <p className="eyebrow">WHAT&apos;S IN THIS CUP?</p>
           <h2>Atomic Habits<br /><em>สูตรเปลี่ยนชีวิตทีละ 1%</em></h2>
           <p className="intro">แก้วนี้ไม่ได้มีคาเฟอีนวิเศษ แต่มีระบบเล็ก ๆ ที่ช่วยให้สิ่งดีทำง่ายขึ้น และสิ่งที่ไม่อยากทำเกิดยากลง</p>
           <div className="ingredients">

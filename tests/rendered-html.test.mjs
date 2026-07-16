@@ -21,6 +21,10 @@ test("landing and brew experience keep the seven-cup contract", async () => {
   assert.match(page, /\/7 INGREDIENTS/);
   assert.match(page, /\/api\/recommend/);
   assert.match(page, /cup-of-us-last-profile/);
+  assert.match(page, /ไม่ต้องรู้ว่า/);
+  assert.match(page, /ตอบ 7 คำถามสั้น ๆ/);
+  assert.match(page, /ไม่ต้องล็อกอิน/);
+  assert.match(page, /เริ่มชงแก้วของฉัน/);
 });
 
 test("database ships fifty books and fifty media pairings", async () => {
@@ -166,8 +170,8 @@ test("MVP is installable and keeps the brief's clear entry points", async () => 
     read("app/manifest.ts"),
     read("public/sw.js"),
   ]);
-  assert.match(page, /ชงแก้วของตัวเอง/);
-  assert.match(page, /ดูตัวอย่างแก้ว/);
+  assert.match(page, /เริ่มชงแก้วของฉัน/);
+  assert.match(page, /ดูก่อนว่าจะได้อะไร/);
   assert.match(layout, /PwaRegister/);
   assert.match(manifest, /display: "standalone"/);
   assert.match(worker, /url\.pathname\.startsWith\("\/api\/"\)/);

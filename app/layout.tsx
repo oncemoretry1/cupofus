@@ -5,19 +5,19 @@ import "./typography.css";
 
 export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
-  title: "Cup of Us — Different books for different us",
-  description: "ร้านหนังสือในจินตนาการที่เสิร์ฟหนังสือเหมือนเครื่องดื่มหนึ่งแก้ว พร้อมสรุป พอดแคสต์ และกิจกรรม Cup (Club) of Us",
+  title: "Cup of Us — วันนี้ไม่รู้จะอ่านอะไร ให้ความรู้สึกเลือกให้",
+  description: "ตอบ 7 คำถามใน 2 นาที รับแก้ว Personality พร้อมหนังสือ กาแฟ เพลง และหนังที่เหมาะกับช่วงเวลานี้",
   openGraph: {
     title: "Cup of Us",
-    description: "Different books for different us. ชงแก้วที่เป็นคุณ",
+    description: "ไม่ต้องรู้ว่าอยากอ่านเล่มไหน แค่รู้ว่าตอนนี้คุณรู้สึกยังไง",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-hook.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cup of Us",
-    description: "Different books for different us. ชงแก้วที่เป็นคุณ",
-    images: ["/og.png"],
+    description: "ตอบ 7 คำถาม แล้วให้ Cup of Us ชงหนังสือที่เหมาะกับคุณตอนนี้",
+    images: ["/og-hook.png"],
   },
 };
 
