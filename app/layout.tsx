@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PwaRegister } from "./components/PwaRegister";
+import { MorphTransition } from "./components/MorphTransition";
 import "./globals.css";
 import "./typography.css";
 import "./centered-layout.css";
@@ -23,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="th"><body><PwaRegister />{children}</body></html>;
+  return <html lang="th"><body><PwaRegister /><MorphTransition />{children}</body></html>;
 }
