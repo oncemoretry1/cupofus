@@ -91,18 +91,16 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
           <div className="hero-variant-copy">
-            <p className="hero-question">BOOK MATCHMAKER · สำหรับวันที่ไม่รู้จะอ่านอะไร</p>
+            <p className="hero-question">หนังสือที่พอดีกับคุณในวันนี้</p>
             <h1 className="hook-headline">
-              <span>ไม่ต้องรู้ว่า</span>
-              <span>อยากอ่านเล่มไหน</span>
-              <em>แค่รู้ว่าตอนนี้</em>
-              <em className="tea-line">คุณรู้สึกยังไง</em>
+              <span>ไม่รู้จะอ่านอะไร?</span>
+              <em>เริ่มจากความรู้สึก</em>
+              <em className="tea-line">ของคุณวันนี้</em>
             </h1>
-            <p className="hero-support">ตอบ 7 คำถามสั้น ๆ แล้วเราจะชง <b>แก้ว Personality</b> ที่พาคุณไปเจอหนังสือ กาแฟ เพลง และหนังที่เหมาะกับช่วงเวลานี้</p>
-            <div className="hook-proof" aria-label="ข้อมูลสำคัญ"><span><b>7</b> คำถาม</span><span><b>2</b> นาที</span><span><b>50</b> หนังสือ</span><span>ไม่ต้องล็อกอิน</span></div>
+            <p className="hero-support">ตอบคำถามสั้น ๆ แล้วรับ <b>แก้ว Personality</b> พร้อมหนังสือ กาแฟ เพลง และหนังที่เข้ากับคุณตอนนี้</p>
+            <div className="hook-proof" aria-label="ข้อมูลสำคัญ"><span><b>7</b> คำถาม</span><span><b>2</b> นาที</span><span><b>50</b> หนังสือ</span><span>เริ่มได้เลย ไม่ต้องล็อกอิน</span></div>
           </div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>เริ่มชงแก้วของฉัน</b><span>→</span></a><a className="sample-cup-link" href="#how-it-works">ดูก่อนว่าจะได้อะไร ↓</a></div>
-          <div className="hook-steps" id="how-it-works"><div><i>01</i><span><b>เลือกความรู้สึก</b><small>ตอบตามวันนี้ ไม่มีผิดถูก</small></span></div><div><i>02</i><span><b>เห็นตัวตนในแก้ว</b><small>Personality และจุดเด่นของคุณ</small></span></div><div><i>03</i><span><b>เปิดโลกที่เข้ากัน</b><small>อ่าน · ฟัง · ดู · ซื้อได้ต่อ</small></span></div></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>เริ่มชงแก้วของฉัน</b><span>→</span></a><small className="cta-note">ตอบตามความรู้สึกตอนนี้ ไม่มีคำตอบผิด</small></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>
@@ -118,12 +116,14 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
               </span>
             </div>;
           })}
-          <div className="carousel-caption"><span>ตัวอย่างผลลัพธ์ของคุณ</span><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p><small>ปัดเพื่อดูอีก 7 บุคลิกของแก้ว</small></div>
+          <div className="carousel-caption"><span>ตัวอย่างแก้วที่คุณอาจได้รับ</span><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p><small>ปัดซ้าย–ขวาเพื่อดูแก้วอื่น</small></div>
           <div className="carousel-pagination" aria-hidden="true">{heroCups.map((cup,index)=><i className={heroIndex===index?"active":""} key={cup.name}></i>)}</div>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>
       </section>
+
+      <section className="hook-process" id="how-it-works" aria-label="Cup of Us ทำงานอย่างไร"><div><i>1</i><span><b>บอกเราว่าวันนี้เป็นอย่างไร</b><small>ตอบ 7 คำถามตามความรู้สึกจริง</small></span></div><div><i>2</i><span><b>รับแก้ว Personality ของคุณ</b><small>เห็นอารมณ์ จุดเด่น และสิ่งที่ใจต้องการ</small></span></div><div><i>3</i><span><b>ไปต่อกับสิ่งที่เข้ากัน</b><small>อ่าน · ฟัง · ดู · ซื้อ จากที่เดียว</small></span></div></section>
 
       <section className="ticker"><div>CUP OF COURAGE ✦ CUP OF CALM ✦ CUP OF CURIOSITY ✦ CUP OF CHANGE ✦ CUP OF COURAGE ✦ CUP OF CALM ✦</div></section>
 

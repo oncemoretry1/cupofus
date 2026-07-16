@@ -1,5 +1,5 @@
 /* Each destination is a focused page, while sharing one visual system. */
-.view-landing>section:not(.hero):not(.ticker),
+.view-landing>section:not(.hero):not(.hook-process),
 .view-landing>footer{display:none}
 .view-brew>section:not(.journey-section),
 .view-discover>section:not(.mood-bar):not(.menu-section):not(.recipe-section):not(.market-section),
