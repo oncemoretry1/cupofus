@@ -147,3 +147,4 @@ body{font-family:"IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif;letter-
   72%{left:50%;top:50%;transform:translate(-50%,-50%) scale(1);border-radius:12px 12px 76px 76px}
   100%{left:50%;top:50%;transform:translate(-50%,-50%) scale(.02);border-radius:50%}
 }
+.morph-transition .morph-label{width:280px!important;min-width:280px!important;max-width:none!important;white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;writing-mode:horizontal-tb!important;text-orientation:mixed!important}
