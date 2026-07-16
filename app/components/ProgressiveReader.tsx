@@ -13,9 +13,10 @@ type ProgressiveReaderProps = {
   eyebrow: string;
   steps: ReaderStep[];
   actions: ReactNode;
+  finishHref?: string;
 };
 
-export function ProgressiveReader({ title, eyebrow, steps, actions }: ProgressiveReaderProps) {
+export function ProgressiveReader({ title, eyebrow, steps, actions, finishHref = "/discover" }: ProgressiveReaderProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const step = steps[currentStep];
   const isFirst = currentStep === 0;
@@ -72,8 +73,8 @@ export function ProgressiveReader({ title, eyebrow, steps, actions }: Progressiv
             <span>←</span><b>ย้อนกลับ<small>{isFirst ? "ต้นทาง" : steps[currentStep - 1].label}</small></b>
           </button>
           <p><b>{String(currentStep + 1).padStart(2,"0")}</b><span>/</span>{String(steps.length).padStart(2,"0")}</p>
-          <button className="reader-forward" onClick={() => goTo(currentStep + 1)} disabled={isLast} aria-label="ไปสถานีถัดไป">
-            <b>{isLast ? "อ่านครบแล้ว" : "อ่านต่อ"}<small>{isLast ? "ถึงปลายทาง" : steps[currentStep + 1].label}</small></b><span>→</span>
+          <button className={`reader-forward${isLast ? " is-finish" : ""}`} onClick={() => isLast ? window.location.assign(finishHref) : goTo(currentStep + 1)} aria-label={isLast ? "กลับไป Cup Directory" : "ไปสถานีถัดไป"}>
+            <b>{isLast ? "กลับ Cup Directory" : "อ่านต่อ"}<small>{isLast ? "เลือกแก้วหรือหนังสือเล่มถัดไป" : steps[currentStep + 1].label}</small></b><span>{isLast ? "⌂" : "→"}</span>
           </button>
         </footer>
       </article>

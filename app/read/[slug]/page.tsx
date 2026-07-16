@@ -106,13 +106,13 @@ export default function DynamicReadPage() {
     {
       id: "aftertaste",
       label: "สถานีปลายทาง",
-      content: <><span className="chapter-no">07</span><h2>รสที่ยังเหลืออยู่</h2><p className="reader-deck">{flight.aftertaste}</p><div className="aftertaste-ticket"><span>คำถามติดกระเป๋ากลับบ้าน</span><strong>{flight.question}</strong><small>ไม่ต้องตอบให้ดี ตอบให้จริงกับช่วงเวลานี้ก็พอ</small></div><div className="reader-final-actions"><a className="reader-next" href={`/cup/${slug}#listen`}><i>◉</i><b>ไปสถานีฟังและดู<small>ฟังบทสรุป ดูคลิป และเพลงที่จับคู่</small></b><span>→</span></a><a className="reader-next secondary" href={`/cup/${slug}#buy`}><i>▣</i><b>หาหนังสือฉบับเต็ม<small>ดูร้านค้าที่ตรวจสอบลิงก์แล้ว</small></b><span>→</span></a></div></>,
+      content: <><span className="chapter-no">07</span><h2>รสที่ยังเหลืออยู่</h2><p className="reader-deck">{flight.aftertaste}</p><div className="aftertaste-ticket"><span>คำถามติดกระเป๋ากลับบ้าน</span><strong>{flight.question}</strong><small>ไม่ต้องตอบให้ดี ตอบให้จริงกับช่วงเวลานี้ก็พอ</small></div><div className="reader-end-directory"><p className="eyebrow">อ่านจบแล้ว · อยากไปทางไหนต่อ?</p><h3>เลือกสถานีถัดไปได้เลย</h3><div><a href="/discover"><i>⌂</i><b>กลับ Cup Directory<small>เลือกจากหนังสือทั้ง 50 เล่ม</small></b><span>→</span></a><a href={`/cup/${slug}#listen`}><i>▶</i><b>ฟังและดูต่อ<small>เสียงสรุป คลิป และเพลงคู่เล่ม</small></b><span>→</span></a><a href={`/cup/${slug}#buy`}><i>▣</i><b>หาหนังสือฉบับเต็ม<small>ดูร้านค้าที่ตรวจสอบลิงก์แล้ว</small></b><span>→</span></a></div></div></>,
     },
   ];
 
   // ProgressiveReader renders the interactive reader-directory / Cup Line.
   return <main className="reader-page reader-story-page"><BookEntrance title={book.title} author={book.author} color={book.coverColor}/>
     <nav className="reader-top"><a className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></a><a href={`/cup/${slug}`}>← กลับไปที่แก้ว</a></nav>
-    <ProgressiveReader title={book.title} eyebrow="CUP LINE · 10–15 MIN" steps={steps} actions={<><button onClick={speak} type="button"><i>{speaking ? "Ⅱ" : "▶"}</i><span><b>{speaking ? "พักเสียงอ่าน" : "ฟังบทอ่าน"}</b><small>อ่านออกเสียงฉบับสรุป</small></span></button><a href={`/cup/${slug}#buy`}><i>▣</i><span><b>หาหนังสือ</b><small>ร้านค้าที่ตรวจสอบแล้ว</small></span></a></>}/>
+    <ProgressiveReader title={book.title} eyebrow="CUP LINE · 10–15 MIN" steps={steps} finishHref="/discover" actions={<><button onClick={speak} type="button"><i>{speaking ? "Ⅱ" : "▶"}</i><span><b>{speaking ? "พักเสียงอ่าน" : "ฟังบทอ่าน"}</b><small>อ่านออกเสียงฉบับสรุป</small></span></button><a href="/discover"><i>⌂</i><span><b>Cup Directory</b><small>กลับไปเลือกหนังสือ</small></span></a><a href={`/cup/${slug}#buy`}><i>▣</i><span><b>หาหนังสือ</b><small>ร้านค้าที่ตรวจสอบแล้ว</small></span></a></>}/>
   </main>;
 }
