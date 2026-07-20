@@ -46,3 +46,10 @@
   .view-landing .hero-copy{padding-left:clamp(88px,7vw,150px);padding-right:clamp(70px,5vw,110px)}
   .view-landing .hero-cup-carousel{max-width:860px;justify-self:center}
 }
+
+/* Clarify the product promise before presenting its features. */
+.view-landing .main-cta b{display:flex;flex-direction:column;align-items:flex-start}.view-landing .main-cta b small{display:block;margin-top:3px;font:600 10px/1.3 "IBM Plex Sans Thai",sans-serif;color:color-mix(in srgb,var(--ink) 72%,transparent)}
+.view-landing .hero-explore-link{min-height:44px;padding:10px 2px;display:inline-flex;align-items:center;border-bottom:1.5px solid var(--ink);font-size:13px;font-weight:700}.view-landing .hero-explore-link:after{content:"→";margin-left:8px}.view-landing .hero-explore-link:hover{border-color:var(--red);color:var(--red)}
+.view-landing .carousel-caption>span{font-family:"IBM Plex Sans Thai",sans-serif;letter-spacing:0}.view-landing .hero-question{font-family:Arial,sans-serif;font-weight:800;letter-spacing:1px}
+@media(min-width:1101px){.view-landing .hero h1.hook-headline{font-size:clamp(67px,4.65vw,91px)}.view-landing .hero-actions .main-cta{width:335px;min-width:335px;height:76px}.view-landing .hero-support{font-size:17px;line-height:1.62}}
+@media(max-width:720px){.view-landing .hero-actions .main-cta{height:76px}.view-landing .hero-explore-link{padding-block:8px}.view-landing .hero-question{line-height:1.35}}

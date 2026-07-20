@@ -95,16 +95,16 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
         <div className="sticker sticker-two">☻<small>GOOD BOOK<br />GOOD MOOD</small></div>
         <div className="hero-copy">
           <div className="hero-variant-copy">
-            <p className="hero-question">หนังสือที่พอดีกับคุณในวันนี้</p>
+            <p className="hero-question">PERSONAL DISCOVERY · BOOKS &amp; MORE</p>
             <h1 className="hook-headline">
-              <span>ไม่รู้จะอ่านอะไร?</span>
-              <em>เริ่มจากความรู้สึก</em>
-              <em className="tea-line">ของคุณวันนี้</em>
+              <span>วันนี้คุณเป็นยังไง?</span>
+              <em>เราจะชงสิ่งที่ควร</em>
+              <em className="tea-line">อ่าน · ฟัง · ดู ต่อ</em>
             </h1>
-            <p className="hero-support">ตอบคำถามสั้น ๆ แล้วรับ <b>แก้ว Personality</b> พร้อมหนังสือ กาแฟ เพลง และหนังที่เข้ากับคุณตอนนี้</p>
-            <div className="hook-proof" aria-label="ข้อมูลสำคัญ"><span><b>7</b> คำถาม</span><span><b>2</b> นาที</span><span><b>50</b> หนังสือ</span><span>เริ่มได้เลย ไม่ต้องล็อกอิน</span></div>
+            <p className="hero-support"><b>Cup of Us ไม่ใช่แค่แบบทดสอบ</b> — คำตอบ 7 ข้อจะกลายเป็นหน้าแนะนำส่วนตัว พร้อมหนังสือสรุป พอดแคสต์ เพลง หนัง และแหล่งซื้อที่เข้ากับคุณตอนนี้</p>
+            <div className="hook-proof" aria-label="ข้อมูลสำคัญ"><span><b>7</b> คำถาม</span><span><b>2</b> นาที</span><span>อ่าน · ฟัง · ดู · ซื้อ</span><span>ไม่ต้องล็อกอิน</span></div>
           </div>
-          <div className="hero-actions"><a className="main-cta" href="/brew"><b>เริ่มชงแก้วของฉัน</b><span>→</span></a><small className="cta-note">ตอบตามความรู้สึกตอนนี้ ไม่มีคำตอบผิด</small></div>
+          <div className="hero-actions"><a className="main-cta" href="/brew"><b>รับคำแนะนำของฉัน<small>ตอบ 7 ข้อ · เห็นผลลัพธ์ทันที</small></b><span>→</span></a><a className="hero-explore-link" href="/discover">ขอดูคลัง 50 เล่มก่อน</a></div>
         </div>
 
         <div className="hero-cup-carousel" aria-label="แก้วหนังสือแนะนำ เลื่อนอัตโนมัติและปัดซ้ายขวาได้" onPointerDown={(event)=>setSlideStart(event.clientX)} onPointerUp={(event)=>{if(slideStart===null)return;const distance=event.clientX-slideStart;if(Math.abs(distance)>35)setHeroIndex((heroIndex+(distance<0?1:heroCups.length-1))%heroCups.length);setSlideStart(null)}} onPointerCancel={()=>setSlideStart(null)}>
@@ -126,14 +126,14 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
               </span>
             </div>;
           })}
-          <div className="carousel-caption"><span>ตัวอย่างแก้วที่คุณอาจได้รับ</span><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p><small>ปัดซ้าย–ขวาเพื่อดูแก้วอื่น</small></div>
+          <div className="carousel-caption"><span>“แก้ว” คือหน้าแนะนำส่วนตัว ไม่ใช่คะแนน</span><h3>{heroCups[heroIndex].name}</h3><p>{heroCups[heroIndex].label}</p><small>ข้างในมีสิ่งให้อ่าน · ฟัง · ดู · ซื้อที่เข้ากับช่วงเวลานี้</small></div>
           <div className="carousel-pagination" aria-hidden="true">{heroCups.map((cup,index)=><i className={heroIndex===index?"active":""} key={cup.name}></i>)}</div>
         </div>
         <div className="coffee-crowd" aria-hidden="true"><i className="coffee-mini coffee-mini-a"></i><i className="coffee-mini coffee-mini-b"></i><i className="coffee-mini coffee-mini-c"></i><i className="coffee-mini coffee-mini-d"></i><i className="coffee-mini coffee-mini-e"></i><b className="floating-bean bean-one"></b><b className="floating-bean bean-two"></b><b className="floating-bean bean-three"></b></div>
         <div className="scribble">different books<br />for different us! <b>↗</b></div>
       </section>
 
-      <section className="hook-process" id="how-it-works" aria-label="Cup of Us ทำงานอย่างไร"><div><i>1</i><span><b>บอกเราว่าวันนี้เป็นอย่างไร</b><small>ตอบ 7 คำถามตามความรู้สึกจริง</small></span></div><div><i>2</i><span><b>รับแก้ว Personality ของคุณ</b><small>เห็นอารมณ์ จุดเด่น และสิ่งที่ใจต้องการ</small></span></div><div><i>3</i><span><b>ไปต่อกับสิ่งที่เข้ากัน</b><small>อ่าน · ฟัง · ดู · ซื้อ จากที่เดียว</small></span></div></section>
+      <section className="hook-process" id="how-it-works" aria-label="Cup of Us ทำงานอย่างไร"><div><i>1</i><span><b>เล่าว่าวันนี้คุณเป็นอย่างไร</b><small>ตอบ 7 ข้อ ไม่มีถูกหรือผิด</small></span></div><div><i>2</i><span><b>รับแก้วประจำวันนี้</b><small>หน้าแนะนำส่วนตัว ไม่ใช่ผลวัดถาวร</small></span></div><div><i>3</i><span><b>เลือกสิ่งที่อยากทำต่อ</b><small>อ่านสรุป · ฟัง · ดู · ซื้อ ในที่เดียว</small></span></div></section>
 
       <section className="ticker"><div>CUP OF COURAGE ✦ CUP OF CALM ✦ CUP OF CURIOSITY ✦ CUP OF CHANGE ✦ CUP OF COURAGE ✦ CUP OF CALM ✦</div></section>
 
