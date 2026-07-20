@@ -94,5 +94,6 @@ export function MorphTransition() {
     <i className="morph-wash morph-wash-yellow"></i>
     <i className="morph-wash morph-wash-blue"></i>
     <i className="morph-wash morph-wash-paper"></i>
+    <span className="morph-mask-logo"><b>cup</b><em>of</em><b>us</b></span>
   </div>;
 }
