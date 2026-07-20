@@ -1,23 +1,23 @@
-.mobile-tab-bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:max-content;height:66px;padding:6px;z-index:110;border:2px solid var(--ink);border-radius:22px;background:rgba(255,253,245,.96);box-shadow:5px 6px 0 var(--ink);backdrop-filter:blur(12px);display:flex;gap:4px}
+.mobile-tab-bar{position:fixed;left:50%;top:10px;transform:translateX(-50%);width:max-content;height:66px;padding:6px;z-index:110;border:2px solid var(--ink);border-radius:22px;background:rgba(255,253,245,.96);box-shadow:5px 6px 0 var(--ink);backdrop-filter:blur(12px);display:flex;gap:4px}
 .mobile-tab-bar>a{width:66px;min-height:50px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink);transition:background .18s,transform .18s}
 .mobile-tab-bar>a:hover,.mobile-tab-bar>a.is-active{background:var(--yellow);transform:translateY(-2px)}.mobile-tab-bar>a>span{font:700 9px/1.1 "IBM Plex Sans Thai",Tahoma,sans-serif;white-space:nowrap}
 .dock-icon{position:relative;width:23px;height:23px;display:block;color:currentColor}.dock-home:before{content:"";position:absolute;left:4px;top:8px;width:14px;height:12px;border:2px solid currentColor;border-top:0;border-radius:2px}.dock-home:after{content:"";position:absolute;left:4px;top:3px;width:13px;height:13px;border-left:2px solid currentColor;border-top:2px solid currentColor;transform:rotate(45deg);border-radius:2px}.dock-search:before{content:"";position:absolute;left:2px;top:2px;width:13px;height:13px;border:2px solid currentColor;border-radius:50%}.dock-search:after{content:"";position:absolute;width:9px;height:2px;background:currentColor;right:0;bottom:4px;transform:rotate(45deg);border-radius:2px}.dock-cup:before{content:"";position:absolute;left:2px;top:4px;width:15px;height:16px;border:2px solid currentColor;border-radius:2px 2px 7px 7px}.dock-cup:after{content:"";position:absolute;right:0;top:8px;width:7px;height:8px;border:2px solid currentColor;border-left:0;border-radius:0 7px 7px 0}.dock-chat:before{content:"";position:absolute;inset:2px 1px 5px;border:2px solid currentColor;border-radius:7px}.dock-chat:after{content:"";position:absolute;left:5px;bottom:1px;width:7px;height:7px;border-left:2px solid currentColor;transform:skew(-28deg)}.dock-person:before{content:"";position:absolute;left:8px;top:1px;width:7px;height:7px;border:2px solid currentColor;border-radius:50%}.dock-person:after{content:"";position:absolute;left:3px;bottom:1px;width:17px;height:10px;border:2px solid currentColor;border-radius:12px 12px 3px 3px}
 .nav-links,.nav>.cup-count,.catalog-nav>div{display:none!important}
-body{padding-bottom:92px}
+html{scroll-padding-top:92px}
 @media(max-width:720px){
-  html{scroll-padding-bottom:92px}
-  body{padding-bottom:78px!important}
+  html{scroll-padding-top:76px}
+  body{padding-bottom:0!important}
   :where(button,a,input,select,textarea){font-size:16px}
   :where(button,a){min-height:44px}
-  .mobile-tab-bar{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));transform:none;width:auto;height:68px;padding:5px 6px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch}
-  .mobile-tab-bar>a{width:auto;min-width:0;min-height:54px;padding:3px 2px;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ink)}
+  .mobile-tab-bar{left:8px;right:8px;top:max(6px,env(safe-area-inset-top));transform:none;width:auto;height:58px;padding:4px 6px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;border-radius:16px}
+  .mobile-tab-bar>a{width:auto;min-width:0;min-height:46px;padding:2px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--ink)}
   .mobile-tab-bar>a.is-active{background:var(--yellow);box-shadow:2px 2px 0 var(--ink)}
-  .mobile-tab-bar>a>i{width:24px;height:24px}
+  .mobile-tab-bar>a>i{width:22px;height:22px;transform:scale(.92)}
   .mobile-tab-bar>a>span{max-width:100%;font:700 9px/1.1 "IBM Plex Sans Thai",Tahoma,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .catalog-nav{height:62px;padding:0 16px;position:sticky;top:0}.catalog-nav>div{display:none!important}.catalog-nav .logo{transform:scale(.88);transform-origin:left center}
-  .nav{height:62px!important;padding:0 16px!important;grid-template-columns:1fr auto!important}.nav>.nav-links,.nav>.cup-count{display:none!important}
+  .catalog-nav{height:70px;padding:0 16px;position:sticky;top:0}.catalog-nav>div{display:none!important}.catalog-nav .logo{visibility:hidden}
+  .nav{height:70px!important;padding:0 16px!important;grid-template-columns:1fr auto!important}.nav>.logo{visibility:hidden}.nav>.nav-links,.nav>.cup-count{display:none!important}
   .catalog-hero{padding:42px 18px 30px!important;grid-template-columns:1fr!important}.catalog-hero h1{font-size:clamp(48px,15vw,67px)!important;line-height:1.02!important;letter-spacing:-.04em!important}.catalog-hero>p:not(.eyebrow){font-size:16px!important}.catalog-hero label{margin-top:15px!important;grid-template-columns:42px 1fr!important}.catalog-hero label b{display:none}.catalog-hero input{min-width:0;padding:15px 3px!important;font-size:16px!important}.catalog-moods{padding:0 18px 22px!important}.catalog-moods button{font-size:13px!important}
-  .reader-story-page{padding-bottom:84px!important}.reader-story{padding-bottom:94px!important}.reader-story-controls{position:sticky;bottom:76px;z-index:4;background:var(--cream);border-radius:14px;padding:8px!important;box-shadow:0 -8px 20px rgba(23,47,43,.08)}
+  .reader-story-page{padding-bottom:28px!important}.reader-story{padding-bottom:36px!important}.reader-story-controls{position:sticky;bottom:8px;z-index:4;background:var(--cream);border-radius:14px;padding:8px!important;box-shadow:0 -8px 20px rgba(23,47,43,.08)}
   .club-page{padding-bottom:10px}.club-rail{position:sticky!important;top:62px!important;z-index:8;margin-inline:-12px;padding:6px 12px;background:rgba(243,237,218,.96);backdrop-filter:blur(8px)}.club-rail>nav{margin:0!important}.club-rail button{font-size:12px!important}.club-post-list{gap:13px!important}.club-post{border-radius:14px!important;box-shadow:4px 5px 0 var(--ink)!important}.club-post:before{width:48px!important}.club-stream-head{margin-top:28px!important}
-  .coffee-menu-section,.cup-detail-hero,.experience{scroll-margin-top:72px}.experience-grid{padding-bottom:86px}.profile-page,.partners-page,.brew-journey{padding-bottom:90px}
+  .coffee-menu-section,.cup-detail-hero,.experience{scroll-margin-top:76px}.experience-grid{padding-bottom:28px}.profile-page,.partners-page,.brew-journey{padding-bottom:32px}
 }
