@@ -9,6 +9,10 @@ import "./mobile-nav.css";
 
 export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml", sizes: "any" }],
+    shortcut: "/favicon.svg",
+  },
   title: "Cup of Us — วันนี้ไม่รู้จะอ่านอะไร ให้ความรู้สึกเลือกให้",
   description: "ตอบ 7 คำถามใน 2 นาที รับแก้ว Personality พร้อมหนังสือ กาแฟ เพลง และหนังที่เหมาะกับช่วงเวลานี้",
   openGraph: {
