@@ -41,7 +41,8 @@ Copy `.env.example` to `.env.local`. Never commit real credentials.
 - `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`: resolve Spotify tracks dynamically
 - `TMDB_API_KEY`: retrieve film metadata
 - `GOOGLE_BOOKS_API_KEY`: enrich book metadata
-- `GOOGLE_MAPS_API_KEY`: future nearby-café integration
+- `GOOGLE_PLACES_API_KEY` (or `GOOGLE_MAPS_API_KEY`): live Google Places search. Google content is requested live and is not copied into the café database.
+- `ADMIN_SYNC_TOKEN`: protects the Bangkok OpenStreetMap café sync endpoint
 
 The featured eight books include direct Spotify and YouTube embed IDs and work without OAuth. API credentials expand dynamic coverage.
 
@@ -58,6 +59,18 @@ Important tables:
 - `profiles`
 - `creator_posts`
 - `analytics_events`
+- `cafes` (500–1,000 Bangkok café records from OpenStreetMap; Google Place IDs can be stored separately)
+
+### Bangkok café directory
+
+After Netlify applies `0002_cafe_directory.sql`, add a long random `ADMIN_SYNC_TOKEN` in Netlify and run the importer once:
+
+```bash
+curl -X POST https://cup-of-us.netlify.app/api/cafes/sync \
+  -H "Authorization: Bearer $ADMIN_SYNC_TOKEN"
+```
+
+The importer deduplicates OpenStreetMap cafés, caps the catalogue at 1,000 records, and can be run again to refresh it. `/api/cafes` reads the local directory; `/api/cafes/google` requests current Google Places data without persisting restricted Google content.
 
 ## Continue from another ChatGPT/Codex account
 

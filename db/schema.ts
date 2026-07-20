@@ -16,3 +16,18 @@ export const authSessions = pgTable("auth_sessions", { id: serial("id").primaryK
 export const authTokens = pgTable("auth_tokens", { id: serial("id").primaryKey(), userId: integer("user_id").notNull().references(() => authUsers.id, { onDelete: "cascade" }), purpose: text("purpose").notNull(), tokenHash: text("token_hash").notNull().unique(), expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(), usedAt: timestamp("used_at", { withTimezone: true }), createdAt: createdAt() });
 export const authRateLimits = pgTable("auth_rate_limits", { id: serial("id").primaryKey(), keyHash: text("key_hash").notNull().unique(), attempts: integer("attempts").notNull().default(0), resetAt: timestamp("reset_at", { withTimezone: true }).notNull(), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow() });
 export const authIdentities = pgTable("auth_identities", { id: serial("id").primaryKey(), userId: integer("user_id").notNull().references(() => authUsers.id, { onDelete: "cascade" }), provider: text("provider").notNull(), providerSubject: text("provider_subject").notNull(), createdAt: createdAt() }, (table) => [uniqueIndex("auth_identity_provider_subject_unique").on(table.provider, table.providerSubject)]);
+export const cafes = pgTable("cafes", {
+  id: serial("id").primaryKey(),
+  source: text("source").notNull().default("osm"),
+  sourceId: text("source_id").notNull(),
+  googlePlaceId: text("google_place_id"),
+  name: text("name").notNull(),
+  area: text("area").notNull().default("Bangkok"),
+  address: text("address"),
+  latitude: text("latitude"),
+  longitude: text("longitude"),
+  categories: text("categories").notNull().default("cafe"),
+  moodTags: text("mood_tags").notNull().default("everyday"),
+  rawTags: text("raw_tags").notNull().default("{}"),
+  syncedAt: timestamp("synced_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [uniqueIndex("cafes_source_id_unique").on(table.source, table.sourceId)]);
