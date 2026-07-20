@@ -128,16 +128,13 @@ body{font-family:"IBM Plex Sans Thai","Noto Sans Thai",Tahoma,sans-serif;letter-
 .morph-transition .morph-wash-yellow{color:var(--yellow)}
 .morph-transition .morph-wash-blue{color:var(--blue)}
 .morph-transition .morph-wash-paper{color:var(--cream)}
-.morph-transition .morph-wash-cup{color:var(--ink);background:linear-gradient(to bottom,var(--yellow) 0 34%,var(--blue) 34% 67%,var(--pink) 67% 100%)}
 .morph-cover .morph-wash-yellow{animation:cupScaleIn .9s cubic-bezier(.76,0,.16,1) both}
 .morph-cover .morph-wash-blue{animation:cupScaleIn .84s .055s cubic-bezier(.76,0,.16,1) both}
 .morph-cover .morph-wash-paper{animation:cupScaleIn .78s .11s cubic-bezier(.76,0,.16,1) both}
-.morph-cover .morph-wash-cup{animation:cupScaleIn .86s cubic-bezier(.76,0,.16,1) both}
 .morph-reveal .morph-wash{clip-path:none;left:50%;top:50%;transform:translate(-50%,-50%) scale(20);border-radius:1px}
 .morph-reveal .morph-wash-paper{animation:cupScaleOut .82s .02s cubic-bezier(.2,.78,.18,1) both}
 .morph-reveal .morph-wash-blue{animation:cupScaleOut .87s .09s cubic-bezier(.2,.78,.18,1) both}
 .morph-reveal .morph-wash-yellow{animation:cupScaleOut .92s .16s cubic-bezier(.2,.78,.18,1) both}
-.morph-reveal .morph-wash-cup{animation:cupScaleOut .88s cubic-bezier(.2,.78,.18,1) both}
 @keyframes cupScaleIn{
   0%{left:var(--morph-x);top:var(--morph-y);transform:translate(-50%,-50%) scale(.04);border-radius:48%}
   46%{left:50%;top:50%;transform:translate(-50%,-50%) scale(1);border-radius:12px 12px 76px 76px}
