@@ -2,7 +2,7 @@
 
 Cup of Us is a full-stack book-discovery café: visitors answer seven questions, brew a personal cup, and receive book, coffee, podcast, music, and film pairings.
 
-Production: https://between-the-lines-th.graphgent-sora.chatgpt.site
+Production: https://cup-of-us.netlify.app
 
 ## What is included
 
@@ -10,7 +10,7 @@ Production: https://between-the-lines-th.graphgent-sora.chatgpt.site
 - Seven-question recommendation flow
 - 50 real café drink pairings
 - Thai reading summaries and infographics
-- Embedded YouTube summaries and Spotify tracks for featured books
+- Embedded YouTube summaries, Spotify tracks, and keyless podcast discovery for every book
 - Film, retailer, profile, saved-cup, community, and analytics surfaces
 - Cloudflare D1 schema and Drizzle migrations
 - Guest-first usage; no ChatGPT login is required
@@ -44,7 +44,11 @@ Copy `.env.example` to `.env.local`. Never commit real credentials.
 - `GOOGLE_PLACES_API_KEY` (or `GOOGLE_MAPS_API_KEY`): live Google Places search. Google content is requested live and is not copied into the café database.
 - `ADMIN_SYNC_TOKEN`: protects the Bangkok OpenStreetMap café sync endpoint
 
-The featured eight books include direct Spotify and YouTube embed IDs and work without OAuth. API credentials expand dynamic coverage.
+The featured books include direct Spotify and YouTube embed IDs and work without OAuth. API credentials expand dynamic coverage.
+
+### Podcast and background audio
+
+Podcast playback does not use Podcast Index and does not require an API key. Each book page searches Apple Podcast Search using the exact book title and author, keeps only episodes with a direct HTTPS audio enclosure, and exposes up to five playable results. The global native audio dock remains active while visitors move between pages and integrates with the browser Media Session controls when available. Apple Podcasts, Spotify, YouTube, and audiobook links remain available as fallbacks when no verified enclosure is returned.
 
 ## Database
 
