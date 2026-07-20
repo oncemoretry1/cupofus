@@ -84,7 +84,6 @@ export function CupExperience({ view = "landing" }: { view?: CupView }) {
 
   return (
     <main id="top" className={`cup-view view-${view}`}>
-      {view==="landing"&&<div className="landing-brew-intro" aria-hidden="true"><p>กำลังชงคำแนะนำที่พอดีกับคุณ</p><div className="intro-ingredients"><i></i><i></i><i></i></div><div className="intro-empty-cup"><div></div><b>cup<br/><em>of</em><br/>us</b></div><span>วันนี้ไม่รู้จะอ่านอะไร...ไม่เป็นไร</span></div>}
       <nav className="nav">
         <Link className="logo" href="/"><span>CUP</span><i>of</i><span>US</span></Link>
         <div className="nav-links useful-nav"><a className="nav-search" href="/discover">⌕ <span>ค้นหาหนังสือ คาเฟ่ พอดแคสต์</span></a><a href="/brew">ชงแก้วของฉัน</a><a href="/club">Cup (Club)</a><a href="/partners">สำรวจใกล้ฉัน</a><a className="profile-icon" href="/profile" aria-label="โปรไฟล์">●</a></div>

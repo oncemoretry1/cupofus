@@ -91,9 +91,6 @@ export function MorphTransition() {
   } as React.CSSProperties;
 
   return <div className={`morph-transition morph-${phase} morph-kind-${morph.kind}`} style={style} aria-hidden="true">
-    <i className="morph-wash morph-wash-yellow"></i>
-    <i className="morph-wash morph-wash-blue"></i>
-    <i className="morph-wash morph-wash-paper"></i>
     <span className="morph-object">
       <i className="morph-steam morph-steam-one"></i>
       <i className="morph-steam morph-steam-two"></i>
