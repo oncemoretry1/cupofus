@@ -11,6 +11,7 @@
     "start": "next start",
     "test": "next build --webpack && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "audit:catalog": "node scripts/audit-catalog.mjs",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
