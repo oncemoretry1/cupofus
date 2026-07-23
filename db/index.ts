@@ -7,7 +7,11 @@ let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
 export function getDb() {
   if (!database) {
-    const connectionString = process.env.NETLIFY_DB_URL || getConnectionString();
+    const connectionString =
+      process.env.DATABASE_URL ||
+      process.env.POSTGRES_URL ||
+      process.env.NETLIFY_DB_URL ||
+      getConnectionString();
     database = drizzle(neon(connectionString), { schema });
   }
   return database;
