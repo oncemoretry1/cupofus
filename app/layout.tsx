@@ -10,7 +10,6 @@ import "./mobile-nav.css";
 import "./audio-dock.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.APP_BASE_URL || "https://cup-of-us.vercel.app"),
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml", sizes: "any" }],

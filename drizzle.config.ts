@@ -4,11 +4,5 @@ export default defineConfig({
   out: "./netlify/database/migrations",
   schema: "./db/schema.ts",
   dialect: "postgresql",
-  dbCredentials: {
-    url:
-      process.env.DATABASE_URL ||
-      process.env.POSTGRES_URL ||
-      process.env.NETLIFY_DB_URL ||
-      "postgres://localhost/cup_of_us",
-  },
+  dbCredentials: { url: process.env.NETLIFY_DB_URL || "postgres://localhost/cup_of_us" },
 });

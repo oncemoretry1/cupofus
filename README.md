@@ -2,7 +2,7 @@
 
 Cup of Us is a full-stack book-discovery café: visitors answer seven questions, brew a personal cup, and receive book, coffee, podcast, music, and film pairings.
 
-Production: https://cup-of-us.vercel.app
+Production: https://cup-of-us.netlify.app
 
 ## What is included
 
@@ -70,7 +70,7 @@ Important tables:
 After Netlify applies `0002_cafe_directory.sql`, add a long random `ADMIN_SYNC_TOKEN` in Netlify and run the importer once:
 
 ```bash
-curl -X POST https://cup-of-us.vercel.app/api/cafes/sync \
+curl -X POST https://cup-of-us.netlify.app/api/cafes/sync \
   -H "Authorization: Bearer $ADMIN_SYNC_TOKEN"
 ```
 
