@@ -58,7 +58,7 @@ async function episodesFromFeeds(term: string) {
       const xml = await feed.text();
       const show = xmlText(xml, "title") || "Podcast";
       const artworkUrl = xmlAttribute(xml, "itunes:image", "href") || xmlText(xml, "url");
-      return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].slice(0, 20).map((match, index) => {
+      return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].slice(0, 20).map((match, index): PodcastEpisode | null => {
         const item = match[1];
         const audioUrl = xmlAttribute(item, "enclosure", "url");
         if (!/^https?:\/\//.test(audioUrl)) return null;
