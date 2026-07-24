@@ -14,6 +14,7 @@ INSERT INTO "books" ("slug","title","thai_title","author","cover_color","summary
 ('mans-search-for-meaning','Man''s Search for Meaning','มนุษย์ค้นหาความหมาย','Viktor E. Frankl','#172f2b','ค้นหาความหมายและเสรีภาพภายในแม้ในช่วงเวลายากที่สุด','ความหมาย,ชีวิต,ความหวัง','ใจล้า,อยากรู้ว่าตัวเองต้องการอะไร','deep,story,philosophical',260,'https://www.audible.com/search?keywords=Mans+Search+for+Meaning','https://open.spotify.com/search/Mans%20Search%20for%20Meaning','https://www.kinokuniya.co.th/search/Mans%20Search%20for%20Meaning','https://shopee.co.th/search?keyword=mans%20search%20for%20meaning','https://www.lazada.co.th/catalog/?q=mans%20search%20for%20meaning','https://www.naiin.com/search-result?keyword=Man%20Search%20for%20Meaning'),
 ('quiet','Quiet','พลังของคนเงียบในโลกที่ไม่เคยหยุดพูด','Susan Cain','#f39aa6','เข้าใจพลังของคนเก็บตัวและออกแบบพื้นที่ที่เหมาะกับธรรมชาติของเรา','บุคลิก,คนเก็บตัว,พลัง','ความสัมพันธ์กับตัวเอง,เหนื่อยกับความคาดหวัง','research,gentle,affirming',400,'https://www.audible.com/search?keywords=Quiet+Susan+Cain','https://open.spotify.com/search/Quiet%20Susan%20Cain','https://www.kinokuniya.co.th/search/Quiet%20Susan%20Cain','https://shopee.co.th/search?keyword=quiet%20susan%20cain','https://www.lazada.co.th/catalog/?q=quiet%20susan%20cain','https://www.naiin.com/search-result?keyword=Quiet%20Susan%20Cain')
 ON CONFLICT DO NOTHING;
+--> statement-breakpoint
 
 INSERT INTO "books" ("slug","title","thai_title","author","cover_color","summary","tags","concerns","personality","reading_minutes","audio_url","podcast_url","kinokuniya_url","shopee_url","lazada_url","naiin_url") VALUES
 ('mindset','Mindset','ใช้ความคิดเอาชนะโชคชะตา','Carol S. Dweck','#75c8d3','เข้าใจกรอบความคิดแบบเติบโตและเรียนรู้จากความผิดพลาด','การเรียนรู้,เติบโต','กลัวล้มเหลว,งานและเป้าหมาย','research,encouraging',320,'https://www.audible.com/search?keywords=Mindset+Carol+Dweck','https://open.spotify.com/search/Mindset%20Carol%20Dweck','https://www.kinokuniya.co.th/search/Mindset','https://shopee.co.th/search?keyword=Mindset%20Carol%20Dweck','https://www.lazada.co.th/catalog/?q=Mindset%20Carol%20Dweck','https://www.naiin.com/search-result?keyword=Mindset'),
@@ -55,6 +56,7 @@ INSERT INTO "books" ("slug","title","thai_title","author","cover_color","summary
 ('ikigai','Ikigai','ความหมายของการมีชีวิตอยู่','Héctor García & Francesc Miralles','#f5e545','สำรวจวิถีชีวิตที่เชื่อมความหมาย ชุมชน และความสุขในทุกวัน','ความหมาย,ชีวิต','หลงทาง,อยากรู้ว่าตัวเองต้องการอะไร','gentle,accessible',240,NULL,'https://open.spotify.com/search/Ikigai%20book',NULL,'https://shopee.co.th/search?keyword=Ikigai%20book',NULL,NULL),
 ('meditations','Meditations','บันทึกของมาร์คุส เอาเรลิอุส','Marcus Aurelius','#172f2b','บันทึกปรัชญาสโตอิกเรื่องการควบคุมตนเอง หน้าที่ และความไม่แน่นอน','ปรัชญา,สโตอิก','กังวล,ใจไม่นิ่ง','philosophical,deep',280,NULL,'https://open.spotify.com/search/Meditations%20Marcus%20Aurelius',NULL,'https://shopee.co.th/search?keyword=Meditations%20Marcus%20Aurelius',NULL,NULL)
 ON CONFLICT DO NOTHING;
+--> statement-breakpoint
 
 INSERT INTO "media_pairings" ("book_slug","song_title","song_artist","song_url","movie_title","movie_year","movie_url","mood","reason") VALUES
 ('atomic-habits','Vienna','Billy Joel','https://open.spotify.com/search/Vienna%20Billy%20Joel','Groundhog Day',1993,'https://www.google.com/search?q=Groundhog+Day+movie','tiny-start','เริ่มใหม่ทีละวันโดยไม่ต้องรีบ'),
@@ -108,6 +110,7 @@ INSERT INTO "media_pairings" ("book_slug","song_title","song_artist","song_url",
 ('ikigai','What a Wonderful World','Louis Armstrong','https://open.spotify.com/search/What+a+Wonderful+World','Ikiru',1952,'https://www.google.com/search?q=Ikiru+1952','meaning','ความหมายพบได้ในงาน ผู้คน และความสุขธรรมดา'),
 ('meditations','Let It Be','The Beatles','https://open.spotify.com/search/Let+It+Be','Gladiator',2000,'https://www.google.com/search?q=Gladiator+2000','stoic','ยอมรับสิ่งควบคุมไม่ได้และเลือกการกระทำของเรา')
 ON CONFLICT DO NOTHING;
+--> statement-breakpoint
 
 INSERT INTO "coffee_pairings" ("book_slug","menu_name","menu_name_thai","ingredients","brew_method","order_tip","caffeine","layer_top","layer_bottom") VALUES
 ('atomic-habits','Honey Americano','อเมริกาโนน้ำผึ้ง','เอสเปรสโซ,น้ำ,น้ำผึ้ง','คนให้น้ำผึ้งละลาย เติมน้ำแข็ง แล้วรินเอสเปรสโซ','สั่งอเมริกาโนเย็นหวานน้อย เพิ่มน้ำผึ้ง','สูง','#d8a657','#4b2c20'),
@@ -161,5 +164,6 @@ INSERT INTO "coffee_pairings" ("book_slug","menu_name","menu_name_thai","ingredi
 ('ikigai','Genmaicha Latte','เก็นไมฉะลาเต้','ชาเขียวข้าวคั่ว,นม','ชงชาแล้วเติมนมอุ่น','สั่งเก็นไมฉะลาเต้หวานน้อย','ต่ำ','#d9cf9d','#9b8852'),
 ('meditations','Hot Americano','อเมริกาโนร้อน','เอสเปรสโซ,น้ำร้อน','เติมช็อตกาแฟลงในน้ำร้อน','สั่งอเมริกาโนร้อนไม่หวาน','สูง','#7a5038','#2a1b16')
 ON CONFLICT DO NOTHING;
+--> statement-breakpoint
 
 UPDATE "media_pairings" SET "movie_title"='(500) Days of Summer',"movie_year"=2009,"movie_url"='https://www.google.com/search?q=500+Days+of+Summer+movie',"reason"='สำรวจรูปแบบความผูกพัน ความคาดหวัง และเรื่องเล่าที่เราสร้างขึ้นในความสัมพันธ์' WHERE "book_slug"='attached';

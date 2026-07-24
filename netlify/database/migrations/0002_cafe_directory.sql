@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS "cafes" (
   "raw_tags" text DEFAULT '{}' NOT NULL,
   "synced_at" timestamp with time zone DEFAULT now() NOT NULL
 );
+--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "cafes_source_id_unique" ON "cafes" USING btree ("source", "source_id");
+--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "cafes_area_idx" ON "cafes" USING btree ("area");
+--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "cafes_name_idx" ON "cafes" USING btree ("name");
